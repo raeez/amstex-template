@@ -1,12 +1,4 @@
 # ----------------------------------------------------------------------------
-# -- TODO
-# -- documentation esp. { TEXMAIN, TEXSUITEMAIN, pdf2htmlex }
-# -- test cross-platform
-# -- use intermediate targes to avoid rebuilding
-# -- investigate latexmk
-# -- improve on $(KILL) blindly using -rf
-
-# ----------------------------------------------------------------------------
 # -- Config
 
 # -- meta data
