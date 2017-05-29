@@ -1,0 +1,45 @@
+%%%%%%%%%%%%%%%%%%%%%%%%
+%% Markup Readability %%
+%%
+%% macros
+\newcommand\nc{\newcommand}
+\newcommand\rc{\renewcommand}
+
+%% nomenclature
+%\newcommand\nm{\nomenclature}
+\newcommand\nm{} % temporarily disable standard \nomenclature
+%\newcommand\mathnm[2]{\nm[#1]{}}
+
+%% shorten the macro syntax
+\newcommand\mc[1]{\mathcal{#1}}
+\newcommand\mbb[1]{\mathbb{#1}}
+\newcommand\mbf[1]{\mathbb{#1}}
+
+\newcommand\image[1]{
+  \begin{figure}[H]\label{fig-#1}
+    \centering
+    \includegraphics[scale=.5]{#1}
+  \end{figure}
+}
+\newcommand\imageopt[3]{ % \imageopt #1-filename #2-scale #3-caption
+  \begin{figure}[H]
+    \centering
+    \ifstrequal{#2}{}{%if no scale provided
+      \includegraphics{#1}}{ % don't set the scale
+      }{\includegraphics[scale=#2]{#1}}\label{fig:#1}
+    \ifstrequal{#3}{}{%if no caption provided
+      }{ % don't try to set one
+      }{\caption{#3}} % otherwise do
+  \end{figure}}
+
+\newcommand\mathsc[1]{\text{\normalfont\scshape#1}}
+
+%% common symbols
+\newcommand\lb{\left[}  \newcommand\rb{\right]}  % [ ]
+\newcommand\llb{\lb\lb}  \newcommand\rrb{\rb\rb} % [[ ]]
+
+\newcommand\lp{\left(}  \newcommand\rp{\right)} % ( )
+\newcommand\llp{\lp\lp} \newcommand\rrp{\rp\rp} % (( ))
+
+\newcommand\twotuple[2]{\lp #1,#2\rp}   % TODO implement variable number of args
+\newcommand\setpresent[2]{\{ #1 | #2\}} % TODO typeset correctly
