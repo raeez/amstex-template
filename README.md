@@ -1,5 +1,4 @@
-# ----------------------------------------------------------------------------
-# -- amstex-template
+# amstex-template
 
 
 Project template for the management and build of large AmSTeX LaTeX projects.
