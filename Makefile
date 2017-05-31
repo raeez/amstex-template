@@ -17,8 +17,8 @@ VIEWPDF    :=open -a $(PDFVIEWER)
 VIEWHTML   :=open -a $(HTMLVIEWER)
 
 # -- target dirs for generated html/pdf files
-INSTALLDIR :=. # ~/proj/www/raeez.com/research
-OUTDIR     :=out
+INSTALLDIR :=$(PROJ)/www/raeez.com/research/wip
+OUTDIR:=out
 
 # -- pdf config
 LTXDIR        :=$(shell kpsewhich -var-value=TEXMFHOME)
@@ -32,7 +32,7 @@ TEXDEBRIS     :=*.toc *.ilg *.log *.nlo *.dvi *.aux *.tar.gz *.nlo *.nls *.nls *
 HTMLTARGET :=--css-filename $(TEXMAIN).css --dest-dir $(OUTDIR)
 HTMLFLAGS  :=--embed-javascript 0 --embed-css 0 --embed-image 0 $(HTMLTARGET)
 HTMLFONTS  :="Karla", "Courier New"
-BUILDHTML  :=pdf2htmlex
+BUILDHTML  :=pdf2htmlex $(HTMLFLAGS)
 
 PDF2HTMLEXJSFILENAME :=pdf2htmlEX.min.js
 GOOGLEANALYTICSID    :=UA-8883032-10
@@ -80,10 +80,10 @@ endef
 TARCONTENTS := README.md Makefile *.tex $(TEXSUITEMAIN) $(BIB) $(SECTIONS)
 
 # -- utils
-MKDIR :=mkdir- p
+MKDIR :=mkdir -p
 ECHO  :=echo
 KILL  :=rm -rf
-CP    :=cp -rf
+CP    :=cp
 MV    :=mv -f
 CD    :=cd
 TAR   :=tar
@@ -130,21 +130,22 @@ qall: clean
 .PHONY: pdf html index
 # TODO  pdf html quick quickfullpdf index clean
 
+p:
+	$(BUILDTEX)
+
 pdf:
+	$(BUILDTEX)
 	make index
 	$(BUILDTEX)
 	$(BUILDTEX)
 	$(BUILDTEX)
 
 index:
-	$(BUILDTEX)
 	makeindex $(OUTDIR)/$(TEXMAIN).nlo -s nomencl.ist -o $(OUTDIR)/$(TEXMAIN).nls
 
 # TODO track dependencies
 html:
 	$(BUILDHTML) $(OUTDIR)/$(TEXMAIN).pdf
-	$(KILL) $(OUTDIR)/$(PDF2HTMLEXJSFILENAME)
-	$(ECHO) "$(STATICJAVASCRIPT)" > $(OUTDIR)/$(PDF2HTMLEXJSFILENAME)
 
 # ----------------------------------------------------------------------------
 # -- install
@@ -161,7 +162,10 @@ install-pdf:
 install-html:
 	-$(MKDIR) $(INSTALLDIR)/$(TEXMAIN)
 	-cd $(INSTALLDIR)/$(TEXMAIN); $(KILL) *.css *.js *.png *.js; cd -
-	cd $(OUTDIR); $(CP) *.html *.css *.js *.png $(INSTALLDIR)/$(TEXMAIN)/; cd -
+	cd $(OUTDIR); $(CP) *.html $(INSTALLDIR)/$(TEXMAIN)/; cd -
+	cd $(OUTDIR); $(CP) *.css $(INSTALLDIR)/$(TEXMAIN)/; cd -
+	cd $(OUTDIR); $(CP) *.js $(INSTALLDIR)/$(TEXMAIN)/; cd -
+	cd $(OUTDIR); $(CP) *.png $(INSTALLDIR)/$(TEXMAIN)/; cd -
 
 # ----------------------------------------------------------------------------
 # -- clean
