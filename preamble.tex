@@ -23,7 +23,8 @@
 %%%%%%%%%%%%%%%%%%
 %% Nomenclature %%
 %%
-\usepackage[intoc]{nomencl}
+%\usepackage[intoc]{nomencl}
+\usepackage{nomencl}
 \makenomenclature
 
 %%%%%%%%%%%%%%
@@ -68,14 +69,14 @@
 %% - introduce nomenclature db using section tags + groups
 %% - standardize labels throughout project
 
-\usepackage{etoolbox}
- \renewcommand\nomgroup[1]{%
-   \item[\bfseries
-     \ifstrequal{#1}{\leca}{\lecatitle}{%
-     \ifstrequal{#1}{\lecb}{\lecbtitle}{%
-     \ifstrequal{#1}{\lecc}{\lecctitle}{%
-     }}}%
-  ]}
+% \usepackage{etoolbox}
+%  \renewcommand\nomgroup[1]{%
+%    \item[\bfseries
+%      \ifstrequal{#1}{\leca}{\lecatitle}{%
+%      \ifstrequal{#1}{\lecb}{\lecbtitle}{%
+%      \ifstrequal{#1}{\lecc}{\lecctitle}{%
+%      }}}%
+%   ]}
 %%%%%%%%%%%%%%%%%%%%%%%
 %% Table of contents %%
 %%
@@ -99,7 +100,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Formatting / Display %%
 %%
-\newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
+% \newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
 \numberwithin{equation}{section}
 % TODO understand what this does
 % (something like number equations within sections)
