@@ -97,6 +97,7 @@ NOW := $(shell date +"%c" | tr ' :' '__')
 .PHONY: all quick
 quick:
 	$(QUICKBUILDTEX)
+	open $(OUTDIR)/$(TEXMAIN).pdf
 
 all: clean pdf html tar install
 
@@ -162,10 +163,8 @@ install-pdf:
 install-html:
 	-$(MKDIR) $(INSTALLDIR)/$(TEXMAIN)
 	-cd $(INSTALLDIR)/$(TEXMAIN); $(KILL) *.css *.js *.png *.js; cd -
-	cd $(OUTDIR); $(CP) *.html $(INSTALLDIR)/$(TEXMAIN)/; cd -
-	cd $(OUTDIR); $(CP) *.css $(INSTALLDIR)/$(TEXMAIN)/; cd -
-	cd $(OUTDIR); $(CP) *.js $(INSTALLDIR)/$(TEXMAIN)/; cd -
-	cd $(OUTDIR); $(CP) *.png $(INSTALLDIR)/$(TEXMAIN)/; cd -
+	cd $(OUTDIR); $(CP) *.html *.css *.js *.png $(INSTALLDIR)/$(TEXMAIN)/; cd -
+	cd $(PROJ)/www/raeez.com; make update-research
 
 # ----------------------------------------------------------------------------
 # -- clean
