@@ -26,7 +26,7 @@ TEXFLAGS      :=-output-directory=out -interaction=nonstopmode
 TEX           :=pdflatex $(TEXFLAGS)
 BUILDTEX      :=$(TEX) $(TEXMAIN).tex
 QUICKBUILDTEX :=$(TEX) $(TEXFLAGS) $(TEXMAIN).tex
-TEXDEBRIS     :=*.toc *.ilg *.log *.nlo *.dvi *.aux *.tar.gz *.nlo *.nls *.nls *.out *.toc *.sta *.gla *.fdb_latexmk *.fls
+TEXDEBRIS     :=*.toc *.ilg *.log *.nlo *.dvi *.aux *.tar.gz *.nlo *.nls *.nls *.out *.toc *.sta *.gla *.synctex.gz *.fdb_latexmk *.fls
 
 # -- html config
 HTMLTARGET :=--css-filename $(TEXMAIN).css --dest-dir $(OUTDIR)
