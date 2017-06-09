@@ -1,0 +1,1930 @@
+\documentstyle[
+%epsf,stmaryrd,
+hyperref,amscd,amstex,amssymb,
+12pt
+]{amsart}
+\emergencystretch=2cm
+%\input xy
+%\xyoption{all}
+
+% symbols we shall use will be defined below using \nc command
+\newcommand{\nc}{\newcommand}
+\newcommand{\rc}{\renewcommand}
+
+%LatexBasics file input:
+%Structure:
+	%A1.  Environments for thms, props, quotinf, citing etc.
+	%A2.  Set lengths commands
+%B. My commands:
+%       1. GRAPHICAL FEATURES
+%       2. ARROWS:
+%       3. VARIOUS SPECIAL SIGNS
+%       4. LARGE OPERATORS
+%       5. ENDINGS
+%       6. Special ``Words'' in TEX:
+%       7. FONTS
+%       8. CONTENTS
+%	9. LIMBO
+%C. Begin Document Command:		 \begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%A. commands (being revised)
+%Keep
+	%Operatornames:
+\nc{\Aut}{{	\operatorname{Aut}	}}
+\nc{\codim}{{	\operatorname{codim}	}}
+%\nc{\Ob}{{	\operatorname{Ob}	}}
+\nc{\PGL}{{	\operatorname{PGL}	}}
+\nc{\supp}{{	\operatorname{supp}	}}
+\nc{\tr}{{	\operatorname{tr}	}}
+
+\nc{\Rep}{{	{\cal{R}}ep		}}
+\nc{\one}{{	\mbox{\bf{1}}		}}
+\nc{\iso}{	\overset{\sim}{\lra}	}
+
+\nc{\nen}{\newenvironment}
+
+%Throwaway:
+%REVISION stopped here
+
+%Quoting:	commands to refer to ths, props etc (see below)
+%%%\nc{\Thm}[1]{Theorem~\ref{#1}}
+%%%\nc{\Prop}[1]{Proposition~\ref{#1}}
+
+%	\nc{\Lem}[1]{Lemma~\ref{#1}}
+
+%%%\nc{\Cor}[1]{Corollary~\ref{#1}}
+%%%\nc{\Conj}[1]{Conjecture~\ref{#1}}
+%%%\nc{\Claim}[1]{Claim~\ref{#1}}
+%%%\nc{\Defn}[1]{Definition~\ref{#1}}
+%%%\nc{\Exa}[1]{Example~\ref{#1}}
+%%%\nc{\Rem}[1]{Remark~\ref{#1}}
+%\nc{\Note}[1]{Note~\ref{#1}}
+
+		%A1.  Environments for thms, props,etc
+
+%\nen{thm}[1]{\label{#1}{\bf Theorem.\ } \em}{}
+%\nen{prop}[1]{\label{#1}{\bf Proposition.\ } \em}{}
+%\nen{lem}[1]{\label{#1}{\bf Lemma.\ } \em}{}
+%\nen{cor}[1]{\label{#1}{\bf Corollary.\ } \em}{}
+%\nen{conj}[1]{\label{#1}{\bf Conjecture.\ } \em}{}
+%\nen{claim}[1]{\label{#1}{\bf Claim.\ } \em}{}
+
+			% environments for defs, examples
+%\nen{defn}[1]{\label{#1}{\bf Definition.\ } }{}
+%\nen{exa}[1]{\label{#1}{\bf Example.\ } }{}
+
+			% environments for rem,note, ack
+%\nen{rem}[1]{\label{#1}{\em Remark.\ } }{}
+%\nen{note}[1]{\label{#1}{\em Note.\ } }{}
+%\nen{exer}[1]{\label{#1}{\em Exercise.\ } }{}
+
+
+		%A2.  Set lengths commands
+
+% set lengths
+%\setlength{\unitlength}{0.8cm}
+\unitlength=1pt
+\setlength{\baselineskip}{18pt}
+\setlength{\parindent}{0cm}
+\setlength{\parskip}{6pt}
+\setlength{\textwidth}{16cm}
+\setlength{\textheight}{21cm}
+\setlength{\oddsidemargin}{0in}%{0.1in}
+\setlength{\evensidemargin}{0in}%{0.1in}
+\setlength{\headheight}{30pt}
+\setlength{\headsep}{40pt}
+\setlength{\topmargin}{-20pt}%{-60pt}
+\setlength{\marginparwidth}{0pt}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%B. MINE%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+		%1.  GRAPHICAL FEATURES
+
+\nc{\pr}{\protect}
+
+                                %Indentation &
+\nc{\nn}{{\newline}}
+\nc{\np}{{\newpage}}	%\nc{\nnn}{{\newpage}}
+
+
+\nc{\lab}{	\label}
+					%Multiple copies:
+\nc{\npp}{{	\newpage\setcounter{page}{0}	}}
+					%Setcounter:
+\nc{\setpa}{		\setcounter{part}		}
+\nc{\setse}{		\setcounter{section}	}
+%\nc{\setse}[1]{		\setcounter{section}{#1}	}
+\nc{\setsus}{		\setcounter{subsection}		}
+\nc{\setsss}{		\setcounter{subsubsection}	}
+\nc{\setpage}{		\setcounter{page}	}
+
+\nc{\nfd}{ $$\text{ This version is preliminary and approximate,
+		             it is not for distribution. }$$	}
+
+\nc{\noi}{{\noindent}}
+				%PROOF and EndOfProof
+\rc{\pf}{{	\noindent {\em Proof.}		}}
+	\let\nop\pf
+\nc{\epf}{ \fbox{\bf QED}	}
+%\nc{\epf}{\square}
+
+\nc{\heart}{{\tiny \cen{\tiny $\heartsuit $ }	}} %Heart
+%%%OLD:		\nc{\nop}{{\noindent {\bf Proof.}} }
+				%TableOfContents
+\nc{\cont}{\tableofcontents}
+
+                                %BREAKS
+\nc{\sbr}{{	\smallpagebreak	}}
+\nc{\mbr}{{	\medpagebreak	}}
+\nc{\bbr}{{	\bigpagebreak	}}
+				%BOLDSYMBOL
+\nc{\bbb}{ 	\boldsymbol 	}
+
+				%BIBILOGRAPHY
+\nc{\bib}{	\begin{thebibliography}{777}	}
+	%the numbers 777 mean that one leaves extra 3 empty spaces
+	%between [XX] and the name XX
+
+\nc{\ebib}{	\end{thebibliography}	}
+\nc{\bit}[1]{	\bibitem[#1]{#1} 		}
+
+				%SIZE:
+\rc{\b}{ 	\big         			}
+\nc{\lam}[1]{{ 	\text{\large $#1$	}	}}
+\nc{\smm}[1]{{ 	\text{\small $#1$	}	}}
+\nc{\fom}[1]{{ 	\text{\footnotesize $#1$	}	}}
+\nc{\tinm}[1]{{ \text{\tiny $#1$	}	}}
+	%%%Possible sizes:	\LARGE\Large\large	\normallsize\small				  \footnotesize\scriptsize\tiny
+
+	%Also, \mbox preserves size!
+				%BULLETS:
+\nc{\bu}{ \bullet         }  			%Bullet
+	%\nc{\bul}{ \bullet         }  			%Bullet
+\nc{\bbu}{ \aa{\bbb \bullet}         }  	%Bullet Above
+\nc{\bus}{{	^\bullet	}}	 	%Bullet Superindex (up)
+\nc{\bui}{{	_\bullet	}}	 	%Bullet Index 	   (bellow)
+	%\nc{\buu}{{	_\bullet	}}	%Bullet Index 	   (bellow)
+
+				%Emphasize = italic style
+\nc{\bem}{{	\begin{em}	}}
+\nc{\eem}{{	\end{em} 	}}
+
+				%BOXES
+%\qed 			is the (standard) command for an Empty box!
+\nc{\bbox}{{	\blackbox	}}	%BLACKbox
+\nc{\bx}{	\boxed	}		%Boxed Formula
+\nc{\tbx}[1]{{\boxed{\tx{#1}}}}		%Boxed Text
+
+\nc{\mmbox}[1]{{	\mbox{$#1$}	}}	%%% MATH-boxes
+\nc{\tbox}[1]{{		\mbox{\tx{#1}}	}}
+
+%THere is a command \fbox used above
+
+
+	%@@@NEWstartsher
+				%2. ARROWS:
+
+
+%\nc{\to}{		\rightarrow			}
+\nc{\ot}{		\leftarrow			}
+									%Long
+\nc{\tto}{		\longrightarrow			}
+\nc{\ott}{		\longleftarrow			}
+					%%%One name
+\nc{\too}[1]{{		\aa{#1}\rightarrow			}}
+\nc{\oot}[1]{{		\aa{#1}\leftarrow			}}
+									%Long
+\nc{\ttoo}[1]{{		\aa{#1}\longrightarrow			}}
+\nc{\oott}[1]{{		\aa{#1}\longleftarrow			}}
+
+					%%%Two names
+\nc{\Too}[2]{{		\aa{#1}{\bb{#2}\rightarrow}		}}
+%\nc{\ooT}[2]{{		\aa{#1}{\bbb{#2}\leftarrow}		}}
+									%Long
+\nc{\TToo}[2]{{		\aa{#1}{\bb{#2}\longrightarrow}		}}
+\nc{\ooTT}[2]{{		\aa{#1}{\bbb{#2}\longleftarrow}		}}
+					%%%Two sided arrows
+\nc{\toot}[2]{{		\aa{#1}{\bb{#2}\rightleftarrows}	}}
+\nc{\ttoot}[2]{{	\aa{#1}{\bb{#2}\rightleftrightarrows}	}}
+
+
+
+%OLD:
+\nc{\ra}{{	\rightarrow		}}
+\nc{\laa}{{	\leftarrow	}}	%Forget it and use @<<<
+					%Long arrows: defined
+\nc{\lra}{{\longrightarrow}}
+%\nc{\lla}{{\longleftarrow}}
+
+				%Left-right arrows:
+\nc{\lr}{{\leftrightarrow}}     	% "corresponds"
+\nc{\lrs}{{\rightleftarrows}}     	% One map in each direction.
+
+         			%Implication and Equivalence.
+\nc{\imp}{{\Rightarrow}}        	%Implication.
+\nc{\impp}{{\Leftarrow}}        	%Implication: backwards.
+\nc{\eq}{{\Leftrightarrow}}        	%Equivalence.
+				%Long versions:
+\nc{\impl}{{\Longrightarrow}}        	%Implication.
+\nc{\imppl}{{\Longleftarrow}}        	%Implication: backwards.
+\nc{\eql}{{\Longleftrightarrow}}        	%Equivalence.
+				%OLD Versions:
+	\nc{\Ra}{{\Rightarrow}}         	%Implication.
+	\nc{\LRa}{{\Leftrightarrow}}        	%Equivalence.
+					%@@@NEWends here
+
+					%MAPS:
+\nc{\inj}{{\pr	\hookrightarrow	}}    		%Injective map-right.
+\nc{\injj}{{\pr	\hookleftarrow	}}    		%Injective map-left.
+
+\nc{\sur}{{	\twoheadrightarrow	}}	%Surjective map-right.
+\nc{\surr}{{	\twoheadleftarrow	}}	%Surjective map-left
+
+\nc{\mm}{{	\mapsto		}}     		%Map on elements.
+\nc{\mmm}{{	\leftarrow\shortmid }}		%Map on elements: to the left.
+%\nc{\mmm}{{	\mapsfrom	}}    		%Map on elements: to the left.
+			% Maps with NAMES above: prefix ``a'' for ``above''
+\nc{\ainj}[1]{{\aa{#1}{\pr\hookrightarrow}	}}    	%Injective map-right.
+\nc{\ainjj}[1]{{\aa{#1}{\pr\hookleftarrow}	}}    	%Injective map.
+
+\nc{\asur}[1]{{	\aa{#1}\twoheadrightarrow	}}	%Surjective map-right.
+\nc{\asurr}[1]{{\aa{#1}\twoheadleftarrow	}}	%Surjective map-left
+
+\nc{\amm}[1]{{	\aa{#1}\mapsto		}}     	%Map on elements.
+\nc{\ammm}[1]{{	\aa{#1}\leftarrow\shortmid }}	%Map on elements: to the left.
+%\nc{\mmm}{{	\mapsfrom	}}    		%Map on elements: to the left.
+
+
+
+\nc{\va}{{\uparrow}}              		%Vertical Up-arrow
+%\nc{\dar}{{\downarrow}}              		%Vertical Down-arrow
+
+
+
+		%3. VARIOUS SPECIAL SIGNS
+
+%3A. Abbreviated commands:
+
+
+\nc{\syp}[1]{	^{ (#1) }		} 	%Symmetric powers
+\nc{\up}[1]{	^{ (#1) }		} 	%Symmetric powers
+\nc{\lp}[1]{	_{ (#1) }		}	%Lower symmetric power
+\nc{\hp}[1]{	^{ [#1] }		}	%Hilbert powers
+%\nc{\sp}[1]{	^{ [#1] }		}
+				%Curly inequalities
+\nc{\cle}{\preceq}		%less
+\nc{\cl}{\prec}			%	strictly
+\nc{\cge}{\succeq}		%greater
+\nc{\cg}{\succ}			%	strictly
+
+\nc{\bb}{	\pr\underset 	}           %Write Bellow
+\rc{\aa}{ 	\pr\overset 	}            %and Above
+
+				%INDENT with(out) bullets:
+\nc{\indd}{{ ${} \ \ \ \ \  \ \        {} $	}}	%Indent
+\nc{\inddd}{{ 	\indd\indd			}}	%Indent 3times
+\nc{\nnd}{{ 	\nn  \indd 			}}	%Indent	in a new line.
+\nc{\nndb}{{ 	\nn  \indd $\bullet$		}}	%Indent+Bullet in new.
+
+				%CENTER
+\nc{\bce}{	\begin{center}	}
+\nc{\ece}{	\end  {center}	}
+\nc{\cen}[1]{	\begin{center}	{\em  #1}	\end  {center}	}
+\nc{\ce}[1]{	\begin{center}	{  #1}	\end  {center}		}
+
+\nc{\bss}{{\backslash}}           		%%% The other slash
+				%ACCENTS:
+\nc{\barr}{ 	\overline 	}      		%Long bar accent
+\nc{\ud}{	\underline	}		%Underline
+
+\nc{\ti}{\tilde}              %Tilde
+\nc{\tii}{\widetilde}         %Tilde: wide
+
+\nc{\hatt}{\widehat}				%Hat: wide
+\nc{\hata}{{	\bbb{ \hat{} }		}}	%Hat: after the letter
+
+\nc{\ch}{\check}              			%Check above the letter
+\nc{\cha}{{ 	\bbb{ \check{} }	}}      %Check after the letter
+
+				%INCLUSIONS
+\nc{\sub}{{	\subseteq	}}         %to the right
+\nc{\subb}{{	\supseteq	}}         %       legt
+\nc{\nsub}{{	\nsubseteq	}}         %Negated
+\nc{\nsubb}{{	\nsupseteq	}}         %
+
+\nc{\nin}{{	\notin	}}
+
+
+				%Brackets:left and right.
+\nc{\lb}{\langle}             				%Square brackets
+\nc{\rb}{\rangle}
+\rc{\l}{\langle}             				%Square brackets
+\nc{\r}{\rangle}
+
+\nc{\lB}{	\left(	}             			%Oval   brackets
+\nc{\rB}{	\right)	}
+\nc{\BBl}{{	\bbb{ \left( \right.}	}}             	%Bold Oval brackets
+\nc{\BBr}{{	\bbb{ \left. \right)}	}}
+
+\nc{\Pa}[2]{ {\lb} #1 {,} #2 {\rb} }				%Pairing
+
+
+\nc{\cD}[1]{ \tx{ $$\CD {#1} \endCD $$ }  }		%Diagramms
+
+		%MATRICES, ARRAYS: Begin-end commands for such enviroments
+%%%%%%%%%%%%%%%%%OVAL matrices:		%Oval Matrix:
+\nc{\mat} {		\left(		\matrix	}
+\nc{\emat}{		\endmatrix	\right)	}
+					%Oval Small Matrix:
+\nc{\sm} {		\left(		\smallmatrix	}
+\nc{\esm}{		\endsmallmatrix	\right)	}
+\nc{\smat} {		\left(		\smallmatrix	}
+\nc{\esmat}{		\endsmallmatrix	\right)	}
+
+%%%%%%%%%%%%%%%%%RECTANGULAR matrices
+\nc{\matr} {		\left[		\matrix	}
+\nc{\ematr}{		\endmatrix	\right]	}
+					%Oval Small Matrix:
+\nc{\smr} {		\left[		\smallmatrix	}
+\nc{\esmr}{		\endsmallmatrix	\right]	}
+\nc{\smatr} {		\left[		\smallmatrix	}
+\nc{\esmatr}{		\endsmallmatrix	\right]	}
+
+%%%%%%%%%%%%%%%%%INVISIBLE matrices	%INVISIBLE Matrix:
+\nc{\imat} {		\left.		\matrix	}
+\nc{\eimat}{		\endmatrix	\right.	}
+					%Invisible Small  Matrix:
+\nc{\ism} {		\left.		\smallmatrix	}
+\nc{\eism}{		\endsmallmatrix	\right.	}
+
+%%%%%%%%%%%%%%%%%CASES
+\nc{\ca}{		\left\{		\smallmatrix	}	%SMALL
+\nc{\eca}{		\endsmallmatrix	\right\}	}
+								%LARGE
+\nc{\Ca}{		\left\{		\matrix		}
+\nc{\Eca}{		\endmatrix	\right.		}	%works
+\nc{\eCa}{		\endmatrix	\right\}	}	%does not work
+	%LARGE does not work -- for some reason it requires that
+	%the matrix inbetween "\left\{" and  "\right\}" be surrounded by {}.
+
+
+				%COMMUTTATIVE DIAGRAMS (Paul Taylor)
+\nc{\com}{	\begin{diagram}	}
+\nc{\ecom}{	  \end{diagram}	}
+
+				%TABLES (=Grids): in LaTex (none in amstex)
+\nc{\tab}{	\begin{tabular}		}
+\nc{\etab}{	\end{tabular}		}	%does not work?
+\nc{\hl}{{	\hline			}}
+
+				%EQUATIONS
+\nc{\Eq}{	\begin{equation}	}
+\nc{\Eeq}{	\end{equation}	}
+				%ALIGN
+\nc{\aln}{	\begin{align}	}
+\nc{\ealn}{	\end{align}	}
+
+
+
+			%SECTIONING
+		%A. Counters
+%%%Making counter for part in Roman or Arabic numbers:
+\nc{\Rpart}{	\rc{\thepart}{\Roman{part}}	}
+\nc{\Apart}{	\rc{\thepart}{\arabic{part}}	}
+	%%%The same for: page, section, subsection ...
+	%%%Can choose from: \arabic,\roman,\Roman,\alph,\Alph
+	%%%Part zero in Roman: there is no zero in roman, so need
+	   %%%\Apart before, and \Rpart after, the 0thh \part command.
+
+		%B. Adding the part reference to the section reference
+\nc{\rref}[2]{\ref{#1}.\ref{#2}}
+		%BB. Adding the part reference to the section reference
+%\nc{\rf}[2]{\ref{#1}.\ref{#2}}
+%\refstepcounter{x}
+
+		%C. Shorhand for sectioning commands
+	%%C1. SECTIONS:	BOLD format in section counters: 			1. command \part assumes BOLD, 2. we add BOLD to ``\section'' command:
+\nc{\pa}[1]{ 	\part{#1}		}
+\nc{\pas}[1]{ 	\part*{#1}		}
+
+\nc{\se}[1]{ 	\section{\bf#1}		}
+\nc{\ses}[1]{ 	\section*{\bf#1}		}
+\nc{\sus}{ 	\subsection		}
+\nc{\sss}{ 	\subsubsection		}
+%\nc{\ssl}[1]{ 	\subsubsection{#1}\label{#1}		}
+
+\nc{\Lem}{ 	\subsection{Lemma}		}
+\nc{\lem}{ 	\subsubsection{Lemma}		}
+\nc{\slem}{ 	\subsubsection*{Lemma}		}
+\nc{\sublem}{ 	\subsubsection{ Sublemma}	}
+\nc{\ssublem}{ \subsubsection*{ Sublemma}	}
+
+\nc{\Lemm}{ 	\subsection{Lemma}		}
+\nc{\lemm}{ 	\subsubsection{Lemma}		}
+\nc{\slemm}{ 	\subsubsection*{Lemma}		}
+\nc{\sublemm}{ 	\subsubsection{ Sublemma}	}
+\nc{\ssublemm}{ \subsubsection*{ Sublemma}	}
+
+\nc{\Pro}{ 	\subsection{Proposition}	}
+\nc{\pro}{ 	\subsubsection{Proposition}	}
+\nc{\spro}{ 	\subsubsection*{Proposition}	}
+
+\nc{\Cor}{ 	\subsection{Corollary}		}
+\nc{\cor}{ 	\subsubsection{Corollary}	}
+\nc{\scor}{ 	\subsubsection*{Corollary}	}
+
+\nc{\Corr}{ 	\subsection{Corollary}		}
+\nc{\corr}{ 	\subsubsection{Corollary}	}
+\nc{\scorr}{ 	\subsubsection*{Corollary}	}
+
+\nc{\Theo}{ 	\subsection{Theorem}		}
+\nc{\theo}{ 	\subsubsection{Theorem}		}
+%\nc{\theo}{ 	\subsubsection{\em Theorem}	}
+\nc{\stheo}{ 	\subsubsection*{Theorem}	}
+
+\nc{\pretheo}{ 	\subsubsection{Pretheorem}	}
+
+\nc{\rem}{ 	\subsubsection{Remark}		}
+\nc{\srem}{ 	\subsubsection*{Remark}	}
+
+\nc{\rems}{ 	\subsubsection{Remarks}		}
+\let\remm\rems
+\nc{\srems}{ 	\subsubsection*{Remarks}	}
+%\nc{\rema}{ 	\subsubsection{Remarks}		}
+
+\nc{\Def}{ 	\subsection{Definition}		}
+\nc{\ddef}{ 	\subsubsection{Definition}	}
+%\nc{\sDef}{ 	\subsection*{Definition}	}
+%\rc{\def}{ 	\subsubsection{Definition}	}
+%\nc{\sdef}{ 	\subsubsection*{Definition}	}
+
+\nc{\comm}{ 	\subsubsection{Comment}		}
+\nc{\scomm}{ 	\subsubsection*{Comment}	}
+\nc{\comms}{ 	\subsubsection{Comments}		}
+\nc{\scomms}{ 	\subsubsection*{Comments}	}
+
+\nc{\claim}{ 	\subsubsection{Claim}		}
+\nc{\sclaim}{ 	\subsubsection*{Claim}	}
+
+
+\nc{\nota}{ 	\subsubsection{Notation}	}
+
+\nc{\conj}{ 	\subsubsection{Conjecture}	}
+\nc{\sconj}{ 	\subsubsection*{Conjecture}	}
+
+\nc{\ex}{ 	\subsubsection{Example}		}
+\nc{\sex}{ 	\subsubsection*{Example}	}
+\nc{\exs}{ 	\subsubsection{Examples}	}
+\nc{\sexs}{ 	\subsubsection*{Examples}	}
+\nc{\Ex}{ 	\subsection{Example}		}
+\nc{\sEx}{ 	\subsection*{Example}	}
+\nc{\Exs}{ 	\subsection{Examples}	}
+\nc{\sExs}{ 	\subsection*{Examples}	}
+
+\nc{\que}{ 	\subsubsection{Question}	}
+\nc{\ques}{ 	\subsubsection{Questions}	}
+\nc{\sque}{ 	\subsubsection*{Question}	}
+\nc{\sques}{ 	\subsubsection*{Questions}	}
+
+
+\nc{\bi}{	\begin{itemize}\item		}
+\rc{\i}{	\item			}
+\nc{\ei}{ \end{itemize}	}
+\nc{\ben}{	\begin{enumerate}\item		}
+\nc{\een}{	\end{enumerate}			}
+				%FOOTNOTES:
+\nc{\ftt}[1]{{\footnote{#1}}}
+\nc{\fttt}[1]{{$^($\footnote{#1}$^)$}}
+\nc{\bftt}[1]{\footnote{#1}}
+				%  Reviwing format footnote:
+\nc{\f}[1]{ \fbox{$ $}\footnote{ \fbox{!}#1 }\fbox{$ $}		}
+
+
+%3B. Special Symbols:
+
+
+%\nc{\ge}{{	\geq	}}
+
+\nc{\Ao}{{	\A^1	}}
+\nc{\Po}{{	\P^1	}}
+\nc{\So}{{	S^1	}}
+
+\nc{\h}{{	\hslash	}}	%Planck
+
+				%Quantifiers
+\nc{\All}{{	\forall		}}
+\nc{\Exx}{{	\exists 	}}
+				%(Semi)infinity
+\nc{\yy}{\infty}
+\nc{\ys}{{  \frac{\infty}{2}  }}
+
+\nc{\ii}{{i\in I}}
+\nc{\ww}{{w\in W}}
+				%%%Short Exact Sequences:
+\nc{\SES}[5]{{	0 @>>> {#1} @>{#2}>> {#3} @>{#4}>> {#5} @>>> 0	}}
+\nc{\Ses}[3] {{	0 @>>> {#1} @>>>     {#2} @>>>     {#3} @>>> 0	}}
+				%Products
+\nc{\pl}{{\oplus}}              		%Direct sum
+\nc{\tim}{{\times}}
+\nc{\btim}{{\boxtimes}}
+				%Semidirect products - not good: triangles only
+\nc{\ltim}{\ltimes}                  	%
+\nc{\rtim}{\rtimes}			%
+                                %Triangles
+\nc{\ltr}{\triangleleft}        %
+\nc{\rtr}{\triangleright}       %
+
+				%TENSORING:
+
+\nc{\ten}{{	\otimes		}}
+\nc{\Lten}{{	\aa{L}\otimes	}}            %Derived tensoring.
+\nc{\Ltim}{{	\aa{L}\times	}}            %Derived product.
+\nc{\Lcap}{{	\aa{L}\cap	}}            %Derived product.
+\nc{\tenA}{	\bb{A}\ten	}
+\nc{\tenB}{	\bb{B}\ten	}
+\nc{\tenZ}{	\bb{\Z}\ten	}
+\nc{\tenR}{	\bb{\R}\ten	}
+\nc{\tenC}{	\bb{\C}\ten	}
+\nc{\tenk}{	\bb{\k}\ten	}
+\nc{\bten}{{\boxtimes}}         		%Tensoring: outer
+
+				%ISOMORPHISMS and such:
+%%% \cong is fragile, need \protect\cong !
+\nc{\con}{{ @>{\protect\cong}>> }}  	%Isomorphism with a right arrow
+\nc{\conl}{{ 	@>{\cong}>>	}}  	%Lower right isomorphism
+\nc{\conn}{{    @<{\cong}<<  	}}  	%Isomormphism with a left arrow
+\nc{\Con}{{	\equiv		}}	%Congruence
+\nc{\appr}{{	\sim		}}	%Approximately
+\nc{\eqr}{{	\sim		}}	%Equivalence relation
+\nc{\equi}{{	\sim		}}	%Equivalence relation
+
+
+\nc{\fra}{ 	\frac	}     	%%%xxxxxxxx  Another name for fractions
+\nc{\ffr}[2]{{ 	\text{\footnotesize $\frac{#1}{#2}$	}	}}
+				%%% Small fraction
+
+
+\nc{\ha}{{ \frac{1}{2} }}     		%%%Half
+	\nc{\half}{{ \frac{1}{2} }}
+%	\nc{\onetwo}{{ \frac{1}{2} }}
+%	\nc{\12}{{ \frac{1}{2} }}
+
+                                %DOTS:
+\nc{\ci}{{\circ}}               %Circle dot
+\nc{\cd }{{\cdot}}            	%Multiplication dot
+\let\cdd\cd            	%Multiplication dot
+%		\nc{\cdx}{{\cdot}}	          %old
+\nc{\cddd}{{\cdot\cdot\cdot}}	%Three dots
+%\dot : one dot above
+%\ddot : two dots above
+%\ddots : three dots slanted
+%\vdots : three dots vertical
+
+			%GEOMETRY
+\nc{\ox}{{	\OO_X		}}               %Functions on $X$
+\nc{\omx}{{	\om_X		}}               %Canonical line bundle
+\nc{\Omx}{{	\Om_X^1		}}               %1-forms
+\nc{\Coh}{{	\CC oh		}}               %
+\nc{\qcoh}{{	q\CC oh		}}               %
+
+\nc{\xt}{{	X_*(T)		}}
+\nc{\Xt}{{	X^*(T)		}}
+
+
+\nc{\cfm}{{	co\fm		}}	%Comodules
+
+
+
+
+
+
+
+			%4. LARGE OPERATORS        %such as \sum
+
+\nc{\cupp}{\bigcup}             %cup,cap
+\nc{\capp}{\bigcap}
+%\nc{\tenn}{\bigotimes}          %times,plus
+\nc{\pll}{\bigoplus}
+
+                                %PRODUCTS  & coproducts:
+\nc{\pii}{\prod}                %Product
+\nc{\ppii}{\bigprod}            %Big product
+\nc{\cci}{\sqcup}              %Coprodduct
+\nc{\ccii}{\bigsqcup}
+
+\nc{\wwe}{\bigwedge}            %wedge
+\nc{\cce}{\bigcoprod}           %cowedge
+
+\nc{\aaa}{	\stackerel	}	%Stack {1} over {2}.
+
+
+
+			%5. ENDINGS
+
+\nc{\edd}{{ \end{document}	}}
+%\nc{\pp}{\endproclaim}        %Endproclaim
+%\nc{\hh}{\endheading}         %Endheading
+
+
+
+
+
+
+
+
+
+			%6. SPECIAL ``Words'' in TEX:
+
+                %Special Symbols
+\nc{\tx}{	\text		}		%Text
+\nc{\df}{{ \protect\overset{ \text{def}}= 	}}		%definition
+\nc{\dff}{{ \ \df\				}}		%definition
+\nc{\inv}{{ {}^{-1}      }}			%inverse
+
+\nc{\thh}{	^{\text{th}}	}                     	%nth
+\nc{\st}{	^{\text{st}}	}                     	%nth
+\nc{\nd}{	^{\text{nd}}	}                     	%nth
+\nc{\rd}{	^{\text{rd}}	}                     	%nth
+
+\nc{\pmo}{{ 	\pm 1		}}
+\nc{\mpo}{{ 	\mp 1		}}
+
+\nc{\htt}{  \text{ht}}				%height
+%\rc{\ht}{  \text{ht}}				%height
+
+\nc{\emp}{{   \emptyset}}      			%Emptyset
+
+						%WEDGES
+\nc{\cowe}{{	\vee	}}			%coWedge
+\nc{\we}{{\wedge}}				%Wedge
+\nc{\wee}{{	\aa{\bullet}\wedge	}}		%All wedge powers
+\nc{\wetwo}{{     \pr\overset{2}\wedge       }}	%2nd wedge power
+
+
+
+                                        %Limits: proj and ind (Protected):
+\nc{\limp}{{	\pr\underset {\leftarrow} \lim		}}	%pro-limit
+\nc{\Limp}{{	\pr\underset {\leftarrow} {\bbb\lim}	}}	%pro-object
+\nc{\limi}{{	\pr\underset {\rightarrow}\lim		}}      %ind-limit
+\nc{\Limi}{{	\pr\underset {\rightarrow}{\bbb\lim}	}}	%ind-object
+                                            %Named versions
+\nc{\llim}[1]{	 \bb{#1}\lim        	}   %Ordinary limit with a ``name''
+					    %Named ind and pro limits:
+\nc{\llimp}[1]{ \bb{#1}{ \pr\underset {\leftarrow} \lim       } }
+\nc{\LLimp}[1]{ \bb{#1}{ \pr\underset {\leftarrow} {\bbb\lim} } }
+\nc{\llimi}[1]{ \bb{#1}{ \pr\underset {\rightarrow}\lim       } }
+\nc{\LLimi}[1]{ \bb{#1}{ \pr\underset {\rightarrow}{\bbb\lim} } }
+
+                                       	%Particular Varieties
+%\nc{\aaa}{{  {\Bbb A}^1  }}          		%A1
+\nc{\ppp}{{ {\Bbb P}^1 }}            		%P1
+\nc{\ppn}{{ {\Bbb P}^n }}            		%Pn
+\nc{\pt}{	{ \text{pt} }	}		%point
+
+		                       %Particular Fields:
+\nc{\qlb}{{ \barr{{\Bbb Q}_l} }}      		%Q-el-bar (l-adic)
+\nc{\ffq}{{  {\Bbb F}_q  }}           		%Ef-q (finite field)
+\nc{\ffp}{{  {\Bbb F}_p  }}           		%Ef-q (finite field)
+\nc{\tw}{   {}^{(1)}	}		%Frobenius twist
+
+		                       %Particular Categories
+\nc{\Ab}{{ 	\AA b 		}}      		%
+\nc{\Set}{{ 	\SS et 		}}      		%
+\nc{\Top}{{ 	\TT op 		}}      		%
+		                       %Particular Groups
+\nc{\Pic}{{ 	\tx{Pic}	}}      		%
+\nc{\cG}{{	\ch G		}}
+\nc{\cB}{{	\ch B		}}
+\nc{\cN}{{	\ch N		}}
+\nc{\cT}{{	\ch T		}}
+\nc{\cH}{{	\ch H		}}
+
+					%Partials
+\nc{\del}{{\partial }}
+\nc{\delb}{{\partial }}
+\nc{\dd}[2]{	\fra{d{#1}}{d{#2}}		}
+\nc{\ddel}[2]{	\fra{\del{#1}}{\del {#2}}	}
+
+					%Actual ``Words''
+\nc{\Spec}{{ 	\text{Spec}      		}}
+\nc{\Specf}{{ 	\text{Specf}      		}}
+\nc{\Spf}{{ 	\text{Spf}      		}}
+\nc{\hk}{{     \text{hyperk\"ahler} 	}}
+\nc{\susy}{{\text{supersymmetry}}}
+
+
+\nc{\ie}{{,\ \     \text{i.e.,}\ \ 	}}
+\nc{\iif}{{\ \     \text{if}\ \ 	}}
+%\nc{\in}{{,\ \     \text{i.e.,}\ \ 	}}
+\nc{\aand}{{\ \ \  \text{and}\ \ \ 	}}
+\nc{\hence}{{\ \ \ \text{hence}\ \ \ 	}}
+\nc{\while}{{\ \ \ \text{while}\ \ \ 	}}
+\nc{\with}{{\ \ \  \text{with}\ \ \ 	}}
+\nc{\oor}{{\ \     \text{or}\ \ 	}}
+\nc{\foor}{{\ \     \text{for}\ \ 	}}
+\nc{\suchthat}{{\ \     \text{such that}\ \ 	}}
+
+
+
+
+					%Linear algebra
+\nc{\rk}{{\operatorname{rk}}}
+\nc{\Ker}{{\operatorname{Ker}}}
+%\nc{\Ker}{{	\text{Ker}	}}
+\nc{\Coker}{{\operatorname{Coker}}}
+%\nc{\Coker}{{	\text{Coker}	}}
+\rc{\Im}{{ 	\text{Im} 	}}
+%\nc{\codim}{{	\text{codim}	}}
+\nc{\rank}{{	\ \text{rank} 	}}
+\nc{\Res}{{	\  \text{Res}   }}
+						%Hom-versions
+\nc{\Hom}{{\operatorname{Hom}}}
+%\nc{\Hom}{{	\text{Hom}	}}
+\nc{\End}{{	\text{End}	}}
+\nc{\RHom}{{	\text{RHom}	}}
+\nc{\HHom}{{	\text{$\HH$om}	}}
+\nc{\RHHom}{{	\text{R$\HH$om} }}
+\nc{\RGa}{{	\text{R$\Ga$}	}}
+\nc{\EEnd}{{	\text{$\EE nd$}	}}
+\nc{\AAut}{{	\text{$\AA ut$}	}}
+\nc{\Ext}{{\operatorname{Ext}}}
+\nc{\EExt}{{\operatorname{Ext}}}
+%\nc{\Ext}{\text{Ext}}
+\nc{\Tor}{{\operatorname{Tor}}}
+\nc{\Der}{{	\text{Der}	}}
+
+\nc{\ord	}{{ \text{ord} }}			%order of zero
+\nc{\divv	}{{ \text{div} }}			%divisor
+\nc{\Lie	}{{ \text{Lie} }}
+
+
+                                        %Various
+                                        %Relative Products, abelianization
+                                        %and affinization
+\nc{\timA} {{   \pr\underset{A}\tim             }}
+\nc{\timB} {{   \pr\underset{B}\tim             }}
+\nc{\timC} {{   \pr\underset{C}\tim             }}
+\nc{\timG} {{   \pr\underset{G}\tim             }}
+\nc{\timH} {{   \pr\underset{H}\tim             }}
+\nc{\timN} {{   \pr\underset{N}\tim             }}
+\nc{\timP}{{    \pr\underset{P}\tim             }}
+\nc{\timQ}{{    \pr\underset{Q}\tim             }}
+\nc{\timS} {{   \pr\underset{S}\tim             }}
+\nc{\timT} {{   \pr\underset{T}\tim             }}
+\nc{\timU} {{   \pr\underset{U}\tim             }}
+\nc{\timV} {{   \pr\underset{V}\tim             }}
+\nc{\timX} {{   \pr\underset{X}\tim             }}
+\nc{\timY} {{   \pr\underset{Y}\tim             }}
+\nc{\timZ} {{   \pr\underset{Z}\tim             }}
+
+\nc{\ab}{{       ^{\text{ab}}   		}}
+\nc{\af}{{       ^{\text{aff}}  		}}
+
+
+%Some already DEFINED shorthand ``words'':
+%\nc{\mod}{\text{mod{\}}}
+%\nc{\dim}{\text{dim}}
+%\nc{\max}{\text{max}}
+%\nc{\and}
+%\nc{\or}{\text{or}}
+
+\nc{\cod}{\text{codim}}	%Codimension
+
+
+
+
+
+
+			%7. FONTS
+
+%FONT: SCRIPT,      Cal by a double letter \??
+%FONT: FRAKTUR        by a single letter with "f", such as "\fA"
+%FONT: GREEK
+% FONT: BLACKBOARD    version that uses a single letter such as "\A"
+%FONT: 	text		(The upright letters): \Aa
+%FONT:  stupid letters  \sA
+
+
+%FONT: SCRIPT,      Cal by a double letter \??
+\rc{\AA}{{\cal A}}
+\nc{\BB}{{\cal B}}
+\nc{\CC}{{\cal C}}
+\nc{\DD}{{\cal D}}
+\nc{\EE}{{\cal E}}
+\nc{\FF}{{\cal F}}
+\nc{\GG}{{\cal G}}
+\nc{\HH}{{\cal H}}
+\nc{\II}{{\cal I}}
+\nc{\JJ}{{\cal J}}
+\nc{\KK}{{\cal K}}
+\nc{\LL}{{\cal L}}
+\nc{\MM}{{\cal M}}
+\nc{\NN}{{\cal N}}
+\nc{\OO}{{\cal O}}
+\nc{\PP}{{\cal P}}
+\nc{\QQ}{{\cal Q}}
+\nc{\RR}{{\cal R}}
+\rc{\SS}{{\cal S}}
+\nc{\TT}{{\cal T}}
+\nc{\UU}{{\cal U}}
+\nc{\VV}{{\cal V}}
+\nc{\WW}{{\cal W}}
+\nc{\ZZ}{{\cal Z}}
+\nc{\XX}{{\cal X}}
+\nc{\YY}{{\cal Y}}
+
+
+% FONT: BLACKBOARD    version that uses a single letter such as "\A"
+		%(1) However, in some cases bellow this is already in use:
+			%	\H,\L,\O,\P,\S
+	%THe original meaning of \H:  			"							\L:	Polish crossed L						       \O:	Swedish crossed O						      \P: 	Backwards P (pargraph?)						     \S:	Section sign
+	%This is resolved by using the let command bellow: first pass to
+	% 	\hH,\lL,\oO,\pP,\sS and then to  	\H,\L,\O,\P,\S.
+		%(2) Some old versions are written bellow indented.
+
+\nc{\A}{{\Bbb A }}
+\nc{\B}{{\Bbb B}}
+\nc{\C}{{\Bbb C}}
+		\nc{\cc}{{\Bbb C}}
+\nc{\Cs}{{\Bbb C^*}}
+		\nc{\cs}{{\Bbb C^*}}
+		\nc{\ccs}{{\Bbb C^*}}
+\nc{\D}{{\Bbb D}}
+\nc{\E}{{\Bbb E}}
+\nc{\F}{{\Bbb F}}
+\nc{\G}{{\Bbb G}}
+	\nc{\hH}{{\Bbb H}}
+\nc{\I}{{\Bbb I}}
+\nc{\J}{{\Bbb J}}
+\nc{\K}{{\Bbb K}}
+	\nc{\lL}{{\Bbb L}}
+%				\nc{\lll}{{\Bbb L}}
+\nc{\M}{{\Bbb M}}
+\nc{\N}{{\Bbb N}}
+	\nc{\oO}{{\Bbb O}}
+	\nc{\pP}{{\Bbb P}}
+				%\nc{\pp}{{\Bbb P}}
+\nc{\Q}{{\Bbb Q}}
+\nc{\R}{{\Bbb R}}
+	\nc{\sS}{{\Bbb S}}
+\nc{\T}{{\Bbb T}}
+\nc{\U}{{\Bbb U}}
+\nc{\V}{{\Bbb V}}
+\nc{\W}{{\Bbb W}}
+\nc{\Z}{{\Bbb Z}}
+\nc{\X}{{\Bbb X}}
+\nc{\Y}{{\Bbb Y}}
+
+\nc{\k}{\Bbbk}
+%\nc{\k}{{\bbb k}}
+
+\let\H\hH
+\let\L\lL
+\let\O\oO
+\let\P\pP
+%\let\S\sS
+
+%FONT: FRAKTUR        by a single letter with "f", such as "\fA"
+			%except the case 	"\fiI" instead of "\fi"
+\nc{\fA}{{\frak A}}
+\nc{\fB}{{\frak B}}
+\nc{\fC}{{\frak C}}
+\nc{\fD}{{\frak D}}
+\nc{\fE}{{\frak E}}
+\nc{\fF}{{\frak F}}
+\nc{\fG}{{\frak G}}
+\nc{\fH}{{\frak H}}
+\nc{\fI}{{\frak I}}
+\nc{\fJ}{{\frak J}}
+\nc{\fK}{{\frak K}}
+\nc{\fL}{{\frak L}}
+\nc{\fM}{{\frak M}}
+\nc{\fN}{{\frak N}}
+\nc{\fO}{{\frak O}}
+\nc{\fP}{{\frak P}}
+\nc{\fQ}{{\frak Q}}
+\nc{\fR}{{\frak R}}
+\nc{\fS}{{\frak S}}
+\nc{\fT}{{\frak T}}
+\nc{\fU}{{\frak U}}
+\nc{\fV}{{\frak V}}
+\nc{\fW}{{\frak W}}
+\nc{\fZ}{{\frak Z}}
+\nc{\fX}{{\frak X}}
+\nc{\fY}{{\frak Y}}
+\nc{\fa}{{\frak a}}
+\nc{\fb}{{\frak b}}
+\nc{\fc}{{\frak c}}
+\nc{\fd}{{\frak d}}
+\nc{\fe}{{\frak e}}
+\nc{\ff}{{\frak f}}
+\nc{\fg}{{\frak g}}
+\nc{\fh}{{\frak h}}
+\nc{\fiI}{{\frak i}}  %!!!
+	\nc{\ffi}{{\frak i}}  %!!!
+\nc{\fj}{{\frak j}}
+\nc{\fk}{{\frak k}}
+\nc{\fl}{{\frak{l}}}
+\nc{\fm}{{\frak m}}
+\nc{\fn}{{\frak n}}
+\nc{\fo}{{\frak o}}
+\nc{\fp}{{\frak p}}
+\nc{\fq}{{\frak q}}
+\nc{\fr}{{\frak r}}
+\nc{\fs}{{\frak s}}
+\nc{\ft}{{\frak t}}
+\nc{\fu}{{\frak u}}
+\nc{\fv}{{\frak v}}
+\nc{\fw}{{\frak w}}
+\nc{\fz}{{\frak z}}
+\nc{\fx}{{\frak x}}
+\nc{\fy}{{\frak y}}
+
+%FONT: GREEK
+\nc{\al}{{\alpha }}
+\nc{\be}{{\beta }}
+\nc{\ga}{{\gamma }}
+\nc{\de}{{\delta }}
+\nc{\ep}{{\varepsilon }}
+\nc{\vap}{{\epsilon }}
+
+\nc{\ze}{{\zeta }}
+\nc{\et}{{\eta }}
+\rc{\th}{{\theta }}
+\nc{\vth}{{\vartheta }}
+
+\nc{\io}{{\iota }}
+\nc{\ka}{{\kappa }}
+\nc{\la}{{\lambda }}
+%mu
+%nu
+%xi
+%pi
+\nc{\vpi}{{	\varpi		}}
+%rho
+\nc{\vrho}{{	\varrho		}}
+\nc{\si}{{	\sigma 		}}
+%tau
+\nc{\ups}{{	\upsilon 	}}
+%phi
+\nc{\vphi}{{	\varphi 	}}
+%chi
+%psi
+\nc{\om}{{	\omega 		}}
+
+\nc{\Ga}{{\Gamma }}
+\nc{\De}{{\Delta }}
+\nc{\nab}{{\nabla}}
+\nc{\na}{{\nabla}}
+\nc{\Th}{{\Theta }}
+\nc{\La}{{\Lambda }}
+%Xi
+%Pi
+\nc{\Si}{{\Sigma }}
+\nc{\Ups}{{\Upsilon }}
+%Phi
+%Psi
+\nc{\Om}{{\Omega }}
+
+
+%FONT: 	UPRIGHT LETTERS: \Aa
+\nc{\Aa}{{	\text{A}	}}
+\nc{\Bb}{{	\text{B}	}}
+\nc{\Cc}{{	\text{C}	}}
+\nc{\Dd}{{	\text{D}	}}
+\nc{\Ee}{{	\text{E}	}}
+\nc{\Ff}{{	\text{F}	}}
+\nc{\Gg}{{	\text{G}	}}
+\nc{\Hh}{{	\text{H}	}}
+\nc{\Ii}{{	\text{I}	}}
+\nc{\Jj}{{	\text{J}	}}
+\nc{\Kk}{{	\text{K}	}}
+\nc{\Ll}{{	\text{L}	}}
+\nc{\Mm}{{	\text{M}	}}
+\nc{\Nn}{{	\text{N}	}}
+\nc{\Oo}{{	\text{O}	}}
+\nc{\Pp}{{	\text{P}	}}
+\nc{\Qq}{{	\text{Q}	}}
+\nc{\Rr}{{	\text{R}	}}
+\nc{\Ss}{{	\text{S}	}}
+\nc{\Tt}{{	\text{T}	}}
+\nc{\Uu}{{	\text{U}	}}
+\nc{\Vv}{{	\text{V}	}}
+\nc{\Ww}{{	\text{W}	}}
+\nc{\Zz}{{	\text{Z}	}}
+\nc{\Xx}{{	\text{X}	}}
+\nc{\Yy}{{	\text{Y}	}}
+
+%FONT: 	Bold	A. Capital	\bA
+\nc{\bGa}{{	\bbb{\Ga}	}}
+\nc{\bA}{{	\bbb{A}		}}
+\nc{\bB}{{	\bbb{B}		}}
+\nc{\bC}{{	\bbb{C}		}}
+\nc{\bD}{{	\bbb{D}		}}
+\nc{\bE}{{	\bbb{E}	}}
+\nc{\bF}{{	\bbb{F}	}}
+\nc{\bG}{{	\bbb{G}	}}
+\nc{\bH}{{	\bbb{H}	}}
+\nc{\bI}{{	\bbb{I}	}}
+\nc{\bJ}{{	\bbb{J}	}}
+\nc{\bK}{{	\bbb{K}	}}
+\nc{\bL}{{	\bbb{L}	}}
+\nc{\bM}{{	\bbb{M}	}}
+\nc{\bN}{{	\bbb{N}	}}
+\nc{\bO}{{	\bbb{O}	}}
+\nc{\bP}{{	\bbb{P}	}}
+\nc{\bQ}{{	\bbb{Q}	}}
+\nc{\bR}{{	\bbb{R}	}}
+\nc{\bS}{{	\bbb{S}	}}
+\nc{\bT}{{	\bbb{T}	}}
+\nc{\bU}{{	\bbb{U}	}}
+\nc{\bV}{{	\bbb{V}	}}
+\nc{\bW}{{	\bbb{W}	}}
+\nc{\bX}{{	\bbb{X}	}}
+\nc{\bY}{{	\bbb{Y}	}}
+\nc{\bZ}{{	\bbb{Z}	}}
+%FONT: 	Bold	B. Lower Case	\ba
+\nc{\ba}{{	\bbb{a}	}}
+			\nc{\bbbb}{{	\bbb{b}	}}
+%				\nc{\bb}{{	\bbb{b}	}}
+\nc{\bc}{{	\bbb{c}	}}
+\nc{\bd}{{	\bbb{d}	}}
+			\nc{\bbe}{{	\bbb{e}	}}
+%				\nc{\be}{{	\bbb{e}	}}
+			\nc{\bbf}{{	\bbb{f}	}}
+%				\nc{\bf}{{	\bbb{f}	}}
+\nc{\bg}{{	\bbb{g}	}}
+\nc{\bh}{{	\bbb{h}	}}
+			\nc{\bbi}{{	\bbb{i}	}}
+%				\nc{\bi}{{	\bbb{i}	}}
+\nc{\bj}{{	\bbb{j}	}}
+			\nc{\bbk}{{	\bbb{k}	}}
+%				\nc{\bk}{{	\bbb{k}	}}
+\nc{\bl}{{	\bbb{l}	}}
+\nc{\bm}{{	\bbb{m}	}}
+\nc{\bn}{{	\bbb{n}	}}
+\nc{\bo}{{	\bbb{o}	}}
+\nc{\bp}{{	\bbb{p}	}}
+\nc{\bq}{{	\bbb{q}	}}
+\nc{\br}{{	\bbb{r}	}}
+\nc{\bs}{{	\bbb{s}	}}
+\nc{\bt}{{	\bbb{t}	}}
+			\nc{\bbbu}{{	\bbb{u}	}}
+%				\nc{\bu}{{	\bbb{u}	}}
+\nc{\bv}{{	\bbb{v}	}}
+\nc{\bw}{{	\bbb{w}	}}
+\nc{\bxx}{{	\bbb{x}	}}
+\nc{\by}{{	\bbb{y}	}}
+\nc{\bz}{{	\bbb{z}	}}
+
+
+
+
+
+\nc{\sA}{{\mathsf A}}
+\nc{\sB}{{\mathsf B}}
+\nc{\sC}{{\mathsf C}}
+\nc{\sD}{{\mathsf D}}
+\nc{\sE}{{\mathsf E}}
+\nc{\sF}{{\mathsf F}}
+\nc{\sG}{{\mathsf G}}
+\nc{\sH}{{\mathsf H}}
+\nc{\sI}{{\mathsf I}}
+\nc{\sJ}{{\mathsf J}}
+\nc{\sK}{{\mathsf K}}
+\nc{\sL}{{\mathsf L}}
+\nc{\sM}{{\mathsf M}}
+\nc{\sN}{{\mathsf N}}
+\nc{\sO}{{\mathsf O}}
+\nc{\sP}{{\mathsf P}}
+\nc{\sQ}{{\mathsf Q}}
+\nc{\sR}{{\mathsf R}}
+\rc{\sS}{{\mathsf S}}
+\nc{\sT}{{\mathsf T}}
+\nc{\sU}{{\mathsf U}}
+\nc{\sV}{{\mathsf V}}
+\nc{\sW}{{\mathsf W}}
+\nc{\sX}{{\mathsf X}}
+\nc{\sY}{{\mathsf Y}}
+\nc{\sZ}{{\mathsf R}}
+\nc{\sa}{{\mathsf a}}
+\rc{\sb}{{\mathsf b}}
+\rc{\sc}{{\mathsf c}}
+\nc{\sd}{{\mathsf d}}
+%\nc{\se}{{\mathsf e}}
+%\rc{\sf}{{\mathsf f}}
+\nc{\ssf}{{\mathsf f}}
+\nc{\sg}{{\mathsf g}}
+\nc{\sh}{{\mathsf h}}
+%\nc{\si}{{\mathsf i}}
+\nc{\sj}{{\mathsf j}}
+\nc{\sk}{{\mathsf k}}
+%\nc{\sl}{{\mathsf l}}
+%\nc{\sm}{{\mathsf m}}
+\nc{\sn}{{\mathsf n}}
+\nc{\so}{{\mathsf o}}
+%\nc{\sp}{{\mathsf p}}
+\nc{\sq}{{\mathsf q}}
+\nc{\sr}{{\mathsf r}}
+%\nc{\ss}{{\mathsf s}}
+%\nc{\st}{{\mathsf t}}
+\nc{\su}{{\mathsf u}}
+\nc{\sv}{{\mathsf v}}
+\nc{\sw}{{\mathsf w}}
+\nc{\sx}{{\mathsf x}}
+\nc{\sy}{{\mathsf y}}
+\nc{\sz}{{\mathsf z}}
+
+
+
+			%8. CONTENTS
+\nc{\toc}{{ 	\small{\tableofcontents} }}
+\nc{\addl}{	\addcontentsline{toc}{subsection}	}
+
+
+
+%%%%%			9. LIMBO (Commands that are not used)
+
+%REDEFINE-the same format as define!: \redefine\gg{frak g}
+%\predefine\greater{\gg}
+%
+
+
+%SymmetricPowers
+\nc{\all}{{ ^{(\alpha)} }}
+\nc{\bee}{{ ^{(\beta)} }}
+\nc{\gaa}{{ ^{(\gamma)} }}
+\nc{\nnnn}{ 		\syp{n}		}
+\nc{\nnn}{               \hp{n}	 	}
+%%GRASSMANNIAN SYMBOLS
+\nc{\GK}{{  	G_\KK		}}
+\nc{\GO}{{  	G_\OO		}}
+\nc{\gK}{{  	\fg_\KK		}}
+\nc{\gO}{{  	\fg_\OO		}}
+\nc{\go}{{  	\fg_\OO		}}
+
+\nc{\BK}{{  	B_\KK		}}
+\nc{\BO}{{  	B_\OO		}}
+\rc{\bK}{{  	\fg_\KK		}}
+\rc{\bO}{{  	\fb_\OO		}}
+
+\nc{\NK}{{  	N_\KK		}}
+\nc{\NO}{{  	N_\OO		}}
+\nc{\nK}{{  	\fn_\KK		}}
+\nc{\nO}{{  	\fn_\OO		}}
+
+\nc{\TK}{{  	T_\KK		}}
+\nc{\TO}{{  	T_\OO		}}
+\nc{\tk}{{  	\ft_\KK		}}
+%\nc{\tK}{{  	\ft_\OO		}}
+\nc{\tO}{{  	\ft_\OO		}}
+
+\nc{\HK}{{  	H_\KK		}}
+\nc{\HO}{{  	H_\OO		}}
+\nc{\hK}{{  	\fh_\KK		}}
+\nc{\hO}{{  	\fh_\OO		}}
+
+%%%QFT
+
+%A. Text:
+\nc{\Kh}{\tx{Ka\"hler\ }}
+\nc{\Khs}{\tx{Ka\"hler structure\ }}
+\nc{\Khss}{\tx{Ka\"hler structures\ }}
+
+\nc{\GKh}{\tx{Generalized Ka\"hler\ }}
+\nc{\GKs}{\tx{Generalized Ka\"hler structure\ }}
+\nc{\GKss}{\tx{Generalized Ka\"hler structures\ }}
+\nc{\gKs}{\tx{Generalized Ka\"hler structure\ }}
+\nc{\gKss}{\tx{Generalized Ka\"hler structures\ }}
+
+\nc{\sYM}{\text{super Young-Mills\ }}
+\nc{\tFT}{\text{topological Field Theory\ }}
+\rc{\top}{\tx{topological\ }}
+\rc{\Top}{\tx{Topological\ }}
+\nc{\TFT}{\text{Topological Field Theory\ }}
+\nc{\TQFT}{\text{Topological Quantum Field Theory\ }}
+\nc{\TQFTs}{\text{Topological Quantum Field Theories\ }}
+\nc{\QFT}{\text{Quantum Field Theory\ }}
+\nc{\QFTs}{\text{Quantum Field Theories\ }}
+\nc{\FT}{\text{Field Theory\ }}
+
+\nc{\HM}{\text{Hitchin moduli\ }}
+\nc{\Hf}{\text{Hitchin fibration\ }}
+\nc{\Wi}{\text{Wilson\ }}
+\nc{\Wo}{\text{Wilson operator\ }}
+\nc{\Wos}{\text{Wilson operators\ }}
+\nc{\tH}{\text{t'Hooft\ }}
+\nc{\tHo}{\text{t'Hooft operator\ }}
+\nc{\Ho}{\text{t'Hooft operator\ }}
+\nc{\tHos}{\text{t'Hooft operators\ }}
+\nc{\Hos}{\text{t'Hooft operators\ }}
+\nc{\Sd}{\text{S-duality\ }}
+\nc{\Ld}{\text{Langlands duality\ }}
+\nc{\Be}{\text{Bogomolny equations\ }}
+%\rc{\d}{\text{duality\ }}
+\nc{\He}{\text{Hecke\ }}
+\nc{\Heo}{\text{Hecke operators\ }}
+\nc{\Hem}{\text{Hecke modifications\ }}
+\nc{\Bgs}{\tx{Bogomolny equations\ }}
+\nc{\Bg}{\tx{Bogomolny equation\ }}
+\nc{\Hk}{{\text{Hyperk$\ddot{a}$hler} }}
+
+
+\nc{\eqq}{{ 	\ =\			}}
+%Infinity algebras:
+\nc{\Cy}{{ 	C_\yy	}}
+\nc{\Ay}{{ 	A_\yy	}}
+\nc{\Ly}{{ 	L_\yy	}}
+\nc{\Cm}{{ 	C_m	}}
+\nc{\Am}{{ 	A_m	}}
+\nc{\Lm}{{ 	L_m	}}
+
+\nc{\En}{{\tx{E$_n$}}}
+\nc{\Eo}{{\tx{E$_1$}}}
+\nc{\Et}{{\tx{E$_2$}}}
+
+
+
+
+%%%
+%SYMBOLS
+\rc{\Cy}{{	Cat_\yy			}}
+\nc{\Cey}{{	Cat^{ex}_\yy		}}
+\nc{\Cyt}{{	\tii{Cat}_\yy		}}
+
+\nc{\Gm}{{	G_m			}}
+\nc{\bGm}{{	\barr{G_m}			}}
+
+\nc{\Uo}{{	U(1)	}}
+\nc{\sqt}{{	\sqrt{2}	}}
+
+\nc{\BGB}{{B\bss G/B}}
+
+\nc{\Glb}{{ \barr{\GG_\la}	}}
+
+\nc{\mut}{{	\mu_2	}}
+
+
+%QM-ST
+\nc{\dx}{{	\dot x		}}
+\nc{\ddx}{{	\ddot x		}}
+
+\nc{\dy}{{	\dot y		}}
+\nc{\ddy}{{	\ddot y		}}
+
+%\nc{\du}{{	\dot u		}}
+\nc{\ddu}{{	\ddot u		}}
+
+\rc{\Cy}{	C^\yy		}
+\nc{\Cmy}{	C^\yy		}
+
+%Partials
+%\nc{\dd}[2]{	\fra{d{#1}}{d{#2}}		}
+%\nc{\ddel}[2]{	\fra{\del{#1}}{\del {#2}}	}
+
+\nc{\hh}{{	\hatt\fh		}}
+\nc{\hhp}{{	\hatt\fh_+	}}
+\nc{\hhm}{{	\hatt\fh_-	}}
+\nc{\jh}{{	J_{\fh}		}}
+\nc{\jhs}{{	J_{\fh}		}}
+%\nc{\l}{{ _{\le 0} 	}}
+%%%%\nc{\p}{{ _{\ge 0}	}}
+\nc{\negg}{{ _{<0} 	}}
+\nc{\pp}{{ _{>0} 	}}
+
+
+
+
+
+\let\t\tau
+\nc{\zb}{{\bar z}}
+\let\d\del
+\nc{\dbar}{{\bar \del}}
+\let\db\dbar
+
+\nc{\p}{\psi}
+\nc{\pb}{{	\bar\psi	}}
+
+
+\nc{\pd}{{	\dot\psi	}}
+\nc{\pbd}{{	\dot{\bar\psi}	}}
+
+\nc{\pos}{{	\tx{\tiny{po}}	}}
+\nc{\mom}{{	\tx{\tiny{mo}}	}}
+
+\nc{\vac}{{	\tx{\tiny{vac}}	}}
+
+\nc{\mb}[1]{{	\mbox{$#1$}	}}
+
+
+\nc{\cdG}{{	\bb{G}\cd	}}
+\nc{\cdGs}{{	\bb{G^*}\cd	}}
+
+%\rc{\l}{{	\bbb l		}}
+\nc{\pms}{{	\{\pm\}	}}
+
+
+
+
+
+
+\nc{\yh}{{	\hatt\yy	}}
+\nc{\hy}{{	\hatt\yy	}}
+
+\nc{\bpl}{{\boxplus}}
+\nc{\bcd}{{\boxdot}}
+%\nc{\bcd}{{\boxtimes}}
+
+
+
+\nc{\gau}{{	e^{-x^2/2}		 }}
+\nc{\istp}{{	\fra{ 1 }{ \sqrt{2\pi} } }}
+\nc{\stp}{{	\sqrt{2\pi}		 }}
+
+
+
+
+
+
+\nc{\Qp}{{	\Q_p		}}
+\nc{\Zp}{{	\Z_p		}}
+\nc{\Fp}{{	\F_p		}}
+\nc{\Fo}{{	\F_1		}}
+\nc{\Ft}{{	\F_2		}}
+
+\nc{\Qy}{{	\Q_\yy		}}
+\nc{\Oy}{{	\sO_\yy		}}
+%\nc{\Oy}{{	\tx{O}_\yy		}}
+\nc{\OOy}{{	\OO_\yy		}}
+\let\Zy\Oy
+\nc{\py}{{	\fp_\yy		}}
+\nc{\Fy}{{	\F_\yy		}}
+\nc{\ky}{{	\ka_\yy		}}
+
+\nc{\FS}{{	\FF\SS			}}
+\nc{\FSb}{{	\FF\SS_\bu		}}
+\nc{\Fsb}{{	\FF\SS_\bu		}}
+\nc{\tFS}{{	\tii{\FF\SS}			}}
+
+\nc{\FSk}{{	\FF\SS_\k		}}
+
+
+
+
+\nc{\tiA}{{ \tii A		}}
+\nc{\tiB}{{ \tii B		}}
+
+
+\nc{\tia}{{ \ud a	}}
+\nc{\tib}{{ \ud b	}}
+
+\nc{\tOm}{{	\tii\Om	}}
+
+
+\nc{\Pb}{{	\{ -,-\}	}}
+\nc{\Pbr}{{	\{ -,-\}	}}
+\nc{\lrb}{{	\lb -,-\rb	}}
+\nc{\lrbo}{{	( -,-)		}}
+\nc{\lrbs}{{	[ -,-]		}}
+
+%\rc{\lrb}[2]{	\lb #1,#2\rb	}
+\nc{\lrbb}[2]{	\lb #1|#2\rb	}
+
+\rc{\sq}{{	\sqcup		}}
+
+
+
+
+
+
+\nc{\Lo}{{L^1}}
+\nc{\Lt}{{L^2}}
+\nc{\Qg}{{	\Q_{\ge 0}	}}
+\nc{\Rg}{{	\R_{\ge 0}	}}
+\nc{\Qgg}{{\Q_{> 0}	}}
+\nc{\Rgg}{{\R_{> 0}	}}
+
+
+\nc{\dagg}{{\dagger}}
+
+
+
+
+
+%FEYNMAN integrals
+\nc{\plc}{{	\aa{\cd}+	}}
+
+
+
+% Costello
+
+\rc{\fa}{{\tx{factorization algebra}\ }}
+\nc{\fas}{{\tx{factorization algebras}\ }}
+
+
+\nc{\Ob}{{\tx{Ob}}}
+\nc{\Obc}{{\tx{Ob}^{cl}}}
+\nc{\Obq}{{\tx{Ob}^q}}
+
+
+\nc{\Obh}{{   \tx{Ob}_\h     }}
+\nc{\Obl}{{   \tx{Ob}_l      }}
+\nc{\kh}{{  \k[[\h]]    }}
+
+
+\nc{\EL}{{    \sE\sL   }}
+\nc{\bEE}{{ \barr\EE }}
+\nc{\dEE}{{ \EE^\dagger    }}
+
+
+\nc{\hi}{{	\fra{1}{\h}	}}
+
+\nc{\SLa}{{	S[\La]		}}
+\nc{\SLap}{{	S[\La']		}}
+\nc{\SL}{{	S[L]		}}
+\nc{\Se}{{	S[\ep]		}}
+
+\nc{\ILa}{{	I[\La]		}}
+\nc{\ILap}{{	I[\La']		}}
+\nc{\IL}{{	I[L]		}}
+\nc{\Ie}{{	I[\ep]		}}
+
+\nc{\FG}{{	\FF\GG		}}
+\nc{\cFG}{{	c\FF\GG		}}
+\nc{\sFG}{{	s\FF\GG		}}
+\nc{\csFG}{{	cs\FF\GG	}}
+
+\nc{\Rp}{{ \R^{>0}		}}
+\nc{\RpL}{{ \R^{>0}_L		}}
+\nc{\Rpe}{{ \R^{>0}_\ep		}}
+
+\nc{\eL}{{	_{\ep L}	}}
+\nc{\wgeL}{{	w^\ga_{\ep L}	}}
+\nc{\wg}{{	w^\ga		}}
+\nc{\wgP}{{	w^\ga_P		}}
+\nc{\WeL}{{	W_{\ep L}	}}
+\nc{\WP}{{	W_P		}}
+
+\rc{\AE}{{	\aa{AE}=	}}
+
+\let\xxyyzz\sv
+\rc{\sv}{{	^\xxyyzz	}}
+
+\nc{\IIc}{	\II^c		}
+\nc{\IIq}{	\II^q		}
+
+\nc{\eV}{{	\tx{eV}		}}
+\nc{\iV}{{	\tx{iV}		}}
+\nc{\iE}{{	\tx{iE}		}}
+%\nc{\iE}{{	\tx{E}^{\tx i}		}}
+\nc{\iH}{{	\tx{iH}		}}
+\nc{\eH}{{	\tx{eH}		}}
+
+\nc{\ICT}{	\tx{I}^{\tx{\small CT}}	}
+
+\nc{\WecL}{{ 	W(\ep,L)	}}
+
+%\nc{\RG}{{	\RR\GG		}}
+\nc{\RG}{{	\TT\GG		}}
+\nc{\TG}{{	\TT\GG		}}
+\nc{\Rps}{{	\R_+^*		}}
+
+\nc{\Den}{{	\DD en		}}
+\nc{\DenM}{{	\DD en_M	}}
+\nc{\DeM}{{	\DD en_M	}}
+
+\nc{\CM}{{	C^\yy(M)	}}
+
+\rc{\a}{{	\frak a		}}
+\rc{\o}{	\aa{0}		}
+
+
+\nc{\zy}{{	(0,\yy)		}}
+\nc{\yz}{{	(0,\yy)		}}
+\nc{\bsi}{{	\bbb\si		}}
+\nc{\IIeq}{{	\II^{eq}	}}
+\nc{\pIIeq}{{	p\II^{eq}	}}
+
+\nc{\uKL}{{	\ud{K_L}	}}
+
+
+
+
+
+\nc{\sgg}{{	g^*	}}
+\nc{\usgg}{{	\ud{g^*}		}}
+
+\nc{\gh}{{	\fra{g}{2}	}}
+\nc{\ghx}{{	\fra{g(x)}{2}	}}
+
+\nc{\uEE}{{	\ud{\EE}	}}
+
+\nc{\ev}{{	\tx{ev}		}}
+
+\nc{\esgg}{{	\protect\ud{	e^{	-\h L\sgg/2	}	}	}}
+
+
+\nc{\Cr}{{	\sC\sr		}}
+\nc{\cri}{{	\sc\sr		}}
+\nc{\CrS}{{	\sC\sr_S		}}
+\nc{\criS}{{	\sc\sr_S		}}
+
+\nc{\Rcap}{{	\aa{R}\cap	}}
+
+\nc{\uP}{{	\ud{P}		}}
+
+
+
+\nc{\uoms}{{	\ud{\om^*}	}}
+
+%\nc{\Qh}{{	\hatt Q		}}
+\nc{\Qh}{{	Q_\h		}}
+
+\nc{\Debv}{{	\De^{BV}	}}
+
+\nc{\Pz}{{   P_0     		}}
+\nc{\BD}{{   \tx{BD}     	}}
+\nc{\CME}{{	\CC\MM\EE	}}
+\nc{\QME}{{	\QQ\MM\EE	}}
+
+\nc{\EQom}{{		(E,Q,\om)	}}
+
+\nc{\hS}{{		\hatt S		}}
+
+
+\nc{\ften}{{	^\ten			}}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%MINEendOF%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%C.
+\begin{document}
+
+
+%Local definitions
+                %%%%%%Home%%%%
+%Local definitions
+\nc{\px}{{  \Pic(X)      }}
+
+
+%\nc{\GGG}{{	\bbb \GG	}}
+\nc{\SSS}{{ \bbb\SS }}
+
+\let\bul\bu
+
+%Local definitions
+\nc{\sis}{ \text{ scheme$/$ind-scheme} } \nc{\siss}{ \text{
+schemes$/$ind-schemes} }
+%\nc{\Rtim}{ {\aa{\ra}\tim }    }
+%\nc{\Ltim}{ {\bb{\la}\tim }    }
+
+%\nc{\laa}{{\leftarrow}}
+\nc{\laaa}{{\longleftarrow}}
+
+\nc{\os}{{  \OO_\S     }}
+
+\nc{\uX}{{ \protect	\ud{\fX}		}}
+\nc{\fXu}{{	\ud\fX				}}
+\nc{\ufX}{{	\ud\fX				}}
+\rc{\sX}{{	\fX^*				}}
+\nc{\suX}{{	\ud{\fX^*}			}}
+\nc{\sXu}{{	\ud{\fX^*}			}}
+
+
+%Discs:
+\rc{\d}{{      d		      }}
+\nc{\dc}{{     \d_c		      }}
+\nc{\ds}{{     \d^*		      }}
+\nc{\dsc}{{     \d^*_c		      }}
+\nc{\dt}{{     \d^2		      }}
+
+\nc{\etac}{{     \eta_c		      }}
+
+\nc{\du}{{      \protect\ud{\d}			}}
+\nc{\uds}{{	\protect\ud{\ds}			}}
+\nc{\dsu}{{	\protect\ud{\ds}			}}
+
+%\nc{\XuX}{{	\fX_{\ud\fX}			}}
+%\nc{\uU}{{	\ud\fU				}}
+
+\nc{\dud}{{	\d_{\du}			}}
+%\nc{\ufX}{{	\ud\fX			}}
+
+
+\nc{\GGG}{{	\GG(G)		}}
+\nc{\GGGm}{{	\GG(\Gm)	}}
+\nc{\tGGG}{{	\tii\GG(G)	}}
+
+
+\nc{\GmO}{{		G_{m,\OO}		}}
+\nc{\GmOn}{{		G_{m,\OO_n}		}}
+\nc{\GmK}{{		G_{m,\KK}		}}
+\nc{\GmKr}{		G_{m,\KK}^{red}		}
+\nc{\GmKu}{{		\protect\ud{G_{m,\KK}}		}}
+%\nc{\GmX}{{	G_{m,\fX}	}}
+
+\nc{\Gmd}{{	G_{m,\d}	}}
+\nc{\Gmdu}{{	G_{m,\du}  }}
+\nc{\Gmds}{{	G_{m,\ds}			}}
+\nc{\Gmdsu}{{	G_{m,\dsu}  }}
+
+
+
+
+
+\nc{\llb}{{ [[		}}
+\nc{\rrb}{{ ]]		}}
+
+%%%Deligne
+\nc{\oxs}{{ \OO_X^*     }}
+\rc{\omx}{{ \Om^1_X     }}
+\nc{\zx}{{  \Z_X        }}
+\nc{\cx}{{  \C_X        }}
+
+\nc{\ps}{{  Pic(\Si)    }}
+\nc{\oss}{{ \OO_\Si^*   }}
+\nc{\oms}{{ \Om^1_\Si   }}
+\nc{\zs}{{  \Z_\Si      }}
+%\nc{\cs}{{ \C_\Si      }}
+\nc{\tend}{{    \aa{L}\ten  }}
+
+\nc{\tup}{{ 2\pi i  }}
+
+\nc{\bub}{		^{\bul\ud\bul}	}
+
+\nc{\fXt}{{ \fX^2		      }}
+
+
+
+\nc{\Fz}{{	\F((z))		}}
+
+%Series:
+%Powers:
+\nc{\bbT}{{		[[T]]				}}
+\nc{\ooT}{{		((T))				}}
+%Discrete powers:
+\nc{\bTu}{{		\ud{[[T]]}			}}
+\nc{\oTu}{{		\ud{((T))}			}}
+%Algebras:
+%(i) topoplogical:
+\nc{\kT}{{ 	\k\bbT					}}
+\nc{\kTo}{{ 	\k\ooT					}}
+%(ii) discrete:
+\nc{\kTu}{{ 	\k\bTu					}}
+\nc{\kTou}{{ 	\k\oTu					}}
+
+
+\nc{\Det}{{ \DD et 	  }}
+
+
+\nc{\id}{{	\ud{d}	}}
+\rc{\sd}{{	d	}}
+\nc{\ids}{{	\ud{d^*}	}}
+\nc{\sds}{{	d^*	}}
+
+\nc{\dn}{{	 \d_n	      }}
+\nc{\hG}{{	 \hatt G      }}
+
+\nc{\red}{{	 ^{red}	      }}
+
+\nc{\PPic}{{	     \PP ic }}
+\nc{\MMap}{{	     \MM ap }}
+
+\nc{\Xc}{{	     X_c    }}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\rc{\bX}{{	\barr X		}}
+\nc{\dX}{{	\del X		}}
+\nc{\hdX}{{	\hatt{\del X}	}}
+
+\nc{\Ep}{{	\EE^{>0}	}}
+
+
+\nc{\Gmb}{{	\barr\Gm	}}
+
+
+\nc{\AZ}{{ Alg_\Z	}}
+\nc{\LG}{{ L\Gm		}}
+\nc{\LGR}{{ L\Gm(R)		}}
+
+%\rc{\tK}{{  _{\small 2}K			}}
+\nc{\taK}{{  _{\small 2}^{^a}K			}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\nc{\hpT}{{	\hp{T}			}}
+\nc{\OGo}{{	\OO_\GG(1)		}}
+
+\nc{\Xal}{{	X^\al			}}
+\nc{\Yal}{{	Y^\al			}}
+\nc{\XXal}{	\XX^\al			}
+\nc{\YYal}{	\YY^\al			}
+
+\nc{\Cd}{{	C\hp{d}	}}
+\nc{\Cn}{{	C\hp{n}	}}
+\nc{\Cal}{{	C\hp{\al}	}}
+\nc{\Calr}{{	C\hp{\al}_r	}}
+\nc{\CalrI}{{	C\hp{\al}_{I-r}	}}
+
+\nc{\Aal}{{	\A\hp{\al}	}}
+\nc{\Aalr}{{	\A\hp{\al}_r	}}
+
+\nc{\alGG}{{	^\al\GG			}}
+\nc{\GGal}{{	\GG_{C\syp{\al}}		}}
+
+
+%%%
+\nc{\loc}{{   _{loc}	}}
+\nc{\Gal}{{   \Ga_{loc}	}}
+
+\nc{\GrS}{{ 		      Gr(S)	      }}
+\nc{\PS}{{   		      \P_S	      }}
+\nc{\DDS}{{   		      \DD_S	      }}
+\nc{\XS}{{   		      X_S	      }}
+\nc{\XST}{{   		      X_S\hp{T}	      }}
+\nc{\cXS}{{   		      \aa{\ci}X_S	      }}
+
+\nc{\GrSn}{{ 		      Gr(S_n)	      }}
+\nc{\Grn}{{  		      Gr(S_n)	      }}
+
+\nc{\Pn}{{   		      \P_n	      }}
+\nc{\DDn}{{   		      \DD_n	      }}
+%\nc{\Xn}{{   		      X_n	      }}
+\nc{\XnT}{{   		      X_n\hp{T}	      }}
+\nc{\cXn}{{   		      \aa{\ci}X_n	      }}
+
+\nc{\cupC}{{		      \cup_C		      }}
+
+
+%%%
+
+\nc{\Aoi}{{	\A^1_i	}}
+\nc{\Aoj}{{	\A^1_j	}}
+\nc{\Poi}{{	\P^1_i	}}
+\nc{\Poj}{{	\P^1_j	}}
+
+\nc{\cQ}{{	\ch Q	}}
+
+
+
+
+%\nc{\GmO}{{		G_{m,\OO}		}}
+%\nc{\GmOn}{{		G_{m,\OO_n}		}}
+%\nc{\GmK}{{		G_{m,\KK}		}}
+%\nc{\GmKr}{		(\GmK)^{red}		}
+%\nc{\GmKu}{{		\protect\ud{G_{m,\KK}}		}}
+%\nc{\GmX}{{	G_{m,\fX}	}}
+%\nc{\Gmd}{{	G_{m,\d}	}}
+%\nc{\Gmds}{{	G_{m,\ds}			}}
+
+\rc{\d}{{      d		      }}
+%\nc{\ds}{{     d^*		      }}
+%\nc{\dt}{{     d^2		      }}
+
+
+%\nc{\uX}{{ \protect	\ud{\fX}		}}
+%\nc{\fXu}{{	\ud\fX				}}
+%\nc{\ufX}{{	\ud\fX				}}
+\rc{\sX}{{	\fX^*				}}
+%\nc{\suX}{{	\ud{\fX^*}			}}
+%\nc{\sXu}{{	\ud{\fX^*}			}}
+%	   \rc{\ds}{{	\fX^*			}}
+\rc{\du}{{      \protect\ud{\d}			}}
+%\nc{\uds}{{	\protect\ud{\ds}			}}
+%\nc{\dsu}{{	\protect\ud{\ds}			}}
+
+%\nc{\XuX}{{	\fX_{\ud\fX}			}}
+%\nc{\uU}{{	\ud\fU				}}
+
+%\nc{\dud}{{	\d_{\du}			}}
+%\nc{\ufX}{{	\ud\fX			}}
+
+
+\nc{\Galp}{{		G_\al			}}
+
+
+\nc{\RRep}{{	\RR ep	}}
+
+
+
+
+%\nc{\uP}{{ \ud{P}	}}
+%\nc{\buP}{{ \barr\uP	}}
+%\rc{\bL}{{ \barr L	}}
+
+%\nc{\uP}{{ \ud{P}	}}
+%\nc{\buP}{{ \hatt\uP	}}
+%\rc{\bL}{{ \hatt L	}}
+
+%\nc{\uP}{{  	  	\ud{P}		}}
+%\nc{\buP}{{ 		\uP{}\hat{}	}}
+%\rc{\bL}{{  		L{}\hat{}		}}
+
+%\nc{\uP}{{  	  	\ud{P}		}}
+\nc{\buP}{{ 		\uP{}^\bu	}}
+\rc{\bL}{{  		L{}^\bu		}}
+
+%%%
+
+
+%
+
+
+
+\rc{\com}{{	\ch\om		}}
+\nc{\como}{{	\ch\om_1		}}
+\nc{\cep}{{	\ch\ep		}}
+
+%\nc{\Det}{{ \DD et 	  }}
+
+\nc{\Aoz}{{	\A^1_z		}}
+\nc{\Cx}{{	C_x		}}
+\nc{\tTT}{{	\tii\TT		}}
+\nc{\tGG}{{	\tii\GG		}}
+%		\nc{\hG}{{	\hat\GG		}}
+
+
+
+\rc{\GGG}{{	\GG(G)		}}
+%\nc{\tGGG}{{	\tii\GG(G)	}}
+
+
+\nc{\tGm}{{ \tii {\Gm}		}}
+\nc{\tGmb}{{ \tii {\Gm}^b 	}}
+
+
+
+%\nc{\corr}{{ \tx{corr}		}}
+
+
+
+\nc{\Map}{{	\tx{Map}		}}
+%\nc{\MMap}{{	\MM ap			}}
+\nc{\RMap}{{	\tx{RMap}		}}
+\nc{\RMMap}{{	\tx{R}\MM\ap		}}
+
+\nc{\CtI}{{	       C\tim I			}}
+\nc{\HHCtI}{{	       \HH_{C\tim I}		}}
+\nc{\HHCI}{{	       \HH_{C\tim I}		}}
+
+
+
+%%%
+\nc{\DDD}{{   \bbb\sD  }}
+
+\nc{\Gk}{{	G_\ka	}}
+\nc{\Aff}{{    \tx{Aff}		  }}
+\nc{\tGL}{{	\tii{GL}	}}
+\nc{\BGm}{{	     B(\Gm)  }}
+
+
+
+\nc{\Ox}{{     \OO_x	      }}
+\nc{\Oxn}{{     \OO_x^n	      }}
+\nc{\Kx}{{     \KK_x	      }}
+\nc{\Kxn}{{     \KK_x^n	      }}
+
+\nc{\GGt}{{  \GG^2	}}
+\nc{\BGmg}{{ B(\Gm)^{gr}	}}
+
+
+
+
+\nc{\BunnX}{{	Bun_{n} (X)		}}
+\nc{\BunnxX}{{	Bun_{n,x} (X)		}}
+\nc{\tGKx}{{	\tii\GK_x 		}}
+
+
+\nc{\Tate}{{		\TT ate	  }}
+
+
+
+\nc{\detg}{{		{\det}^{\tx{gr}}	}}
+\nc{\gdet}{{	\detg		}}
+
+\nc{\DDet}{{	\DD et		}}
+
+            %TITLE and AUTHORS
+\title[]{
+.
+\\
+}
+
+%\author{            }
+%\address{Dept. of Mathematics and Statistics, University of blah               at A, A MA 02139, USA}
+%\email{        a@b.c    }
+
+%\thanks{}
+
+\date{
+?
+}
+\maketitle
+
+\toc
+
+\edd
