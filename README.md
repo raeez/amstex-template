@@ -18,6 +18,7 @@ Project template for the management and build of large AmSTeX LaTeX projects.
 See beginning of Makefile for configuration variables / flags
 
 ## TODO
+- review merge june 7
 - check cross platform compatability (at present only tested on darwin)
 - improve dependency management with intermediate build targets
 - documentation esp. { TEXMAIN, TEXSUITEMAIN, pdf2htmlex }
