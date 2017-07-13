@@ -71,11 +71,11 @@
 \nc\C{\mathbb{C}}
 \nc{\FnS}{\grk\lp\Sigma\rp}
 \nc\laurentpoly{\lb x,x^{-1}\rb}
-\nc\laurentser{\llp~z\rrp}
-\nc\fpowerser{\llb~z\rrb}
-\nc\klocint{\grk\fpowerser}
-\nc\Klocfrac{K\laurentser}
-\nc\tensor{\otimes} % algebraic tensor product
+\nc\laurentser[1]{\llp#1\rrp}
+\nc\fpowerser[1]{\llb#1\rrb}
+\nc\klocint{\grk\fpowerser{z}}
+\nc\Klocfrac{K\laurentser{z}}
+\nc\tensor{\otimes}
 
 %\nc\Spec[1]{\mathrm{Spec} (#1)}
 %\nc\Specf[1]{\mathrm{Specf} (#1)}
@@ -187,9 +187,9 @@
 
 \nc\Hilb{\mathcal{H}\mathbb{ilb}}
 
-\nc\disj{\sqcup} % TODO distinguish bigsqcup and sqcup
+\nc\disj{\bigsqcup} % TODO distinguish bigsqcup and sqcup
 \nc\bij{\leftrightarrow}
-\nc\sur{\twoheadedrightarrow}
+\nc\surj{\twoheadedrightarrow}
 \nc\inj{\rightarrowtail}
 \nc\injects{\inj}
 % \nc\xinj{\xrightarrowtail} % see sty-glg/commands package
@@ -424,7 +424,7 @@
 \nc\VermaL[2]{\mathbf{L}_{#1,#2}}
 \nc\V[1]{\mathbb{V}_{#1}}
 
-\nc\lie[1]{\mathfrak{#1]}}
+\nc\lie[1]{\mathfrak{#1}}
 \nc\so{\lie{so}}
 \nc\su{\lie{su}}
 \rc\sl{\lie{sl}}
@@ -434,3 +434,7 @@
 \rc\P{\mathbb{P}}
 \rc\sp{\mathfrak{sp}}
 \nc\g{\lie{g}}
+% Roq lecture
+\nc\Perv{\Cat{Perv}}
+\nc\kmod{k-\Cat{mod}}
+%\nc\B{\mbf{B}}
