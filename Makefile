@@ -28,6 +28,8 @@ TEX           :=pdflatex $(TEXFLAGS)
 BUILDTEX      :=$(TEX) $(TEXMAIN).tex
 QUICKBUILDTEX :=$(TEX) $(TEXFLAGS) $(TEXMAIN).tex
 TEXDEBRIS     :=*.toc *.ilg *.log *.nlo *.dvi *.aux *.tar.gz *.nlo *.nls *.nls *.out *.toc *.sta *.gla *.fdb_latexmk *.fls *.synctex.gz
+FONT_PROFILE  ?=auto
+FONT_PROFILE_INPUT :=\def\raeezfontprofile{$(FONT_PROFILE)}\input{$(TEXMAIN).tex}
 
 # -- html config
 HTMLTARGET :=--css-filename $(TEXMAIN).css --dest-dir $(OUTDIR)
@@ -38,7 +40,8 @@ BUILDHTML  :=pdf2htmlex $(HTMLFLAGS)
 PDF2HTMLEXJSFILENAME :=pdf2htmlEX.min.js
 GOOGLEANALYTICSID    :=UA-8883032-10
 define STATICPDFHTML
-<head><meta charset="utf-8"><meta name="Description" content="silliness" /><title>Raeez Lorgat</title><meta name="author" content="Raeez Lorgat"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="google-site-verification" content="WfuYCzFoftKafLhmWLqacdDaXEsU4EKbRyZnEwLFxQw" /><link rel="stylesheet" href="scale.css"><!--<script src="jquery-2.1.0.min.js"></script>--><script src="modernizr-2.0.6.min.js"></script><meta http-equiv="refresh" content="0; url=http://raeez.com/$(INSTALLURL)/$(TEXMAIN)/$(TEXMAIN).pdf" /> </head>endef
+<head><meta charset="utf-8"><meta name="Description" content="silliness" /><title>Raeez Lorgat</title><meta name="author" content="Raeez Lorgat"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="google-site-verification" content="WfuYCzFoftKafLhmWLqacdDaXEsU4EKbRyZnEwLFxQw" /><link rel="stylesheet" href="scale.css"><!--<script src="jquery-2.1.0.min.js"></script>--><script src="modernizr-2.0.6.min.js"></script><meta http-equiv="refresh" content="0; url=http://raeez.com/$(INSTALLURL)/$(TEXMAIN)/$(TEXMAIN).pdf" /> </head>
+endef
 
 define STATICJAVASCRIPT
 (function(){/*
@@ -98,12 +101,31 @@ NOW := $(shell date +"%c" | tr ' :' '__')
 # ----------------------------------------------------------------------------
 # -- default and meta build rules
 #
-.PHONY: all quick
+.PHONY: all quick check install-consumer-symlinks migrate-consumer-entrypoints specimen-pdftex specimen-luatex
 quick:
 	$(QUICKBUILDTEX)
 	open $(OUTDIR)/$(TEXMAIN).pdf
 
 all: clean pdf html tar install
+
+check: install-consumer-symlinks
+	scripts/check-template-harness
+
+install-consumer-symlinks:
+	scripts/install-consumer-symlinks
+
+migrate-consumer-entrypoints:
+	scripts/migrate-consumer-entrypoints
+
+specimen-pdftex:
+	mkdir -p $(OUTDIR)
+	pdflatex -interaction=nonstopmode -halt-on-error -output-directory=$(OUTDIR) '$(FONT_PROFILE_INPUT)' >$(OUTDIR)/$(TEXMAIN)-pdftex-pass1.log
+	pdflatex -interaction=nonstopmode -halt-on-error -output-directory=$(OUTDIR) '$(FONT_PROFILE_INPUT)'
+
+specimen-luatex:
+	mkdir -p $(OUTDIR)
+	lualatex -interaction=nonstopmode -halt-on-error -output-directory=$(OUTDIR) '$(FONT_PROFILE_INPUT)' >$(OUTDIR)/$(TEXMAIN)-luatex-pass1.log
+	lualatex -interaction=nonstopmode -halt-on-error -output-directory=$(OUTDIR) '$(FONT_PROFILE_INPUT)'
 
 # ----------------------------------------------------------------------------
 # -- view output

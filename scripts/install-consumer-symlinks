@@ -1,0 +1,44 @@
+#!/bin/sh
+set -eu
+
+template_root=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
+style_target=../latex-template/raeez-math-template.sty
+
+install_link() {
+  repo=$1
+  link=$repo/raeez-math-template.sty
+
+  if [ ! -d "$repo" ]; then
+    printf 'missing repo: %s\n' "$repo" >&2
+    return 1
+  fi
+
+  if [ -L "$link" ]; then
+    current=$(readlink "$link")
+    if [ "$current" = "$style_target" ]; then
+      printf 'ok %s -> %s\n' "$repo" "$current"
+      return 0
+    fi
+    rm "$link"
+  elif [ -e "$link" ]; then
+    printf 'refusing to replace non-symlink: %s\n' "$link" >&2
+    return 1
+  fi
+
+  (cd "$repo" && ln -s "$style_target" raeez-math-template.sty)
+  printf 'linked %s -> %s\n' "$repo" "$style_target"
+}
+
+[ -f "$template_root/raeez-math-template.sty" ] || {
+  printf 'missing template: %s/raeez-math-template.sty\n' "$template_root" >&2
+  exit 1
+}
+
+install_link "$HOME/chiral-bar-cobar"
+install_link "$HOME/cbc"
+install_link "$HOME/chiral-bar-cobar-vol2"
+install_link "$HOME/chiral-bar-cobar-vol2-kz-bv-20260424"
+install_link "$HOME/chiral-bar-cobar-vol4"
+install_link "$HOME/calabi-yau-quantum-groups"
+install_link "$HOME/igusa-cusp-form"
+install_link "$HOME/topological-strings"

@@ -1,0 +1,346 @@
+#!/bin/sh
+set -eu
+
+template_root=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
+style_target=../latex-template/raeez-math-template.sty
+tmp_root=${TMPDIR:-/tmp}/latex-template-harness
+
+mkdir -p "$tmp_root"
+
+need() {
+  command -v "$1" >/dev/null 2>&1 || {
+    printf 'missing command: %s\n' "$1" >&2
+    return 1
+  }
+}
+
+font_resolves() {
+  luaotfload-tool --find="$1" 2>/dev/null | grep -q 'Resolved file name'
+}
+
+adobepro_weight_resolves() {
+  { font_resolves AGaramondPro-Semibold && font_resolves AGaramondPro-SemiboldItalic; } ||
+    { font_resolves AGaramondPro-Bold && font_resolves AGaramondPro-BoldItalic; }
+}
+
+reject_log_defects() {
+  log=$1
+  label=$2
+
+  if grep -E '(^! |Overfull \\[hv]box|Missing character:|Undefined control sequence|LaTeX Error|Package .* Error)' "$log" >&2; then
+    printf 'typography check failed in %s: see %s\n' "$label" "$log" >&2
+    return 1
+  fi
+}
+
+reject_typography_warnings() {
+  log=$1
+  label=$2
+
+  if grep -E '(LaTeX Font Warning|Size substitutions|Package microtype Warning|Font shape .*not available)' "$log" >&2; then
+    printf 'typography warning check failed in %s: see %s\n' "$label" "$log" >&2
+    return 1
+  fi
+}
+
+reject_pdf_font_defects() {
+  fonts=$1
+  label=$2
+
+  if awk 'NR > 2 && ($0 ~ / Type 3 / || $(NF-4) != "yes" || $(NF-3) != "yes" || $(NF-2) != "yes") { print; bad = 1 } END { exit bad }' "$fonts" >&2; then
+    return 0
+  fi
+
+  printf 'embedded-font check failed in %s: see %s\n' "$label" "$fonts" >&2
+  return 1
+}
+
+print_font_audit() {
+  if ! command -v luaotfload-tool >/dev/null 2>&1; then
+    printf 'print font audit: luaotfload-tool not found\n'
+    return 0
+  fi
+
+  missing=
+  for font in GaramondPremrPro GaramondPremrPro-It \
+    GaramondPremrPro-Smbd GaramondPremrPro-SmbdIt; do
+    if ! font_resolves "$font"; then
+      missing="${missing}${missing:+, }$font"
+    fi
+  done
+
+  if [ -n "$missing" ]; then
+    printf 'print font audit: EB Garamond body fallback; missing %s\n' "$missing"
+  else
+    printf 'print font audit: Garamond Premier Pro body family complete\n'
+  fi
+
+  if font_resolves GaramondPremrPro-Disp; then
+    printf 'print font audit: Garamond Premier Pro Display available\n'
+  fi
+
+  missing=
+  for font in AGaramondPro-Regular AGaramondPro-Italic; do
+    if ! font_resolves "$font"; then
+      missing="${missing}${missing:+, }$font"
+    fi
+  done
+  if ! adobepro_weight_resolves; then
+    missing="${missing}${missing:+, }AGaramondPro-{Semibold,SemiboldItalic} or AGaramondPro-{Bold,BoldItalic}"
+  fi
+  if [ -n "$missing" ]; then
+    printf 'print font audit: Adobe Garamond Pro profile unavailable; missing %s\n' "$missing"
+  else
+    printf 'print font audit: Adobe Garamond Pro body family complete\n'
+  fi
+}
+
+check_load_after_documentclass() {
+  label=$1
+  tex=$2
+
+  awk -v label="$label" '
+    function fail(message) {
+      printf "%s\n", message > "/dev/stderr"
+      bad = 1
+      exit
+    }
+    /^[[:space:]]*($|%)/ { next }
+    state == 0 {
+      if ($0 !~ /^[[:space:]]*\\documentclass([[:space:]]*\[[^]]*\])?[[:space:]]*\{[^}]+\}/) {
+        fail("entrypoint contract failed in " label ": first noncomment command is not \\documentclass at line " NR)
+      }
+      state = 1
+      next
+    }
+    state == 1 {
+      if ($0 !~ /^[[:space:]]*\\usepackage([[:space:]]*\[[^]]*\])?[[:space:]]*\{raeez-math-template\}/) {
+        fail("entrypoint contract failed in " label ": first nonblank noncomment command after \\documentclass is not \\usepackage{raeez-math-template} at line " NR)
+      }
+      loaded = 1
+      exit
+    }
+    END {
+      if (bad) {
+        exit 1
+      }
+      if (!loaded) {
+        printf "entrypoint contract failed in %s: no \\usepackage{raeez-math-template} after \\documentclass\n", label > "/dev/stderr"
+        exit 1
+      }
+    }
+  ' "$tex"
+}
+
+check_mainpreambleonly_guard() {
+  label=$1
+  tex=$2
+
+  awk -v label="$label" '
+    function fail(message) {
+      printf "%s\n", message > "/dev/stderr"
+      bad = 1
+      exit
+    }
+    /^[[:space:]]*%/ { next }
+    /\\ifdefined[[:space:]]*\\mainpreambleonly/ { guard = NR }
+    /\\begin[[:space:]]*\{document\}/ {
+      if (!guard || guard > NR) {
+        fail("entrypoint contract failed in " label ": \\ifdefined\\mainpreambleonly guard is missing before \\begin{document}")
+      }
+      seen_document = 1
+      exit
+    }
+    END {
+      if (bad) {
+        exit 1
+      }
+      if (!seen_document) {
+        printf "entrypoint contract failed in %s: no \\begin{document}\n", label > "/dev/stderr"
+        exit 1
+      }
+    }
+  ' "$tex"
+}
+
+check_consumer_entrypoint() {
+  label=$1
+  tex=$2
+
+  check_load_after_documentclass "$label" "$tex"
+  check_mainpreambleonly_guard "$label" "$tex"
+}
+
+compile_specimen() {
+  engine=$1
+  command=$2
+  need "$command"
+
+  out=$(mktemp -d "$tmp_root/specimen-$engine-XXXXXX")
+  printf 'specimen %s -> %s\n' "$engine" "$out"
+  (cd "$template_root" &&
+    "$command" -interaction=nonstopmode -halt-on-error \
+      -output-directory "$out" main.tex >"$out/main-pass1.log" 2>&1 &&
+    "$command" -interaction=nonstopmode -halt-on-error \
+      -output-directory "$out" main.tex >"$out/main.log" 2>&1)
+  reject_log_defects "$out/main.log" "specimen $engine"
+  reject_typography_warnings "$out/main.log" "specimen $engine"
+
+  if command -v pdffonts >/dev/null 2>&1; then
+    pdffonts "$out/main.pdf" >"$out/fonts.txt"
+    reject_pdf_font_defects "$out/fonts.txt" "specimen $engine"
+    printf 'fonts %s:\n' "$engine"
+    sed '1,2d;s/^/  /' "$out/fonts.txt"
+  fi
+}
+
+compile_profile_probe() {
+  profile=$1
+  command=$2
+  out=$(mktemp -d "$tmp_root/profile-$profile-XXXXXX")
+  printf 'profile %s -> %s\n' "$profile" "$out"
+  {
+    printf '%s\n' '\documentclass{memoir}'
+    printf '\\usepackage[%s]{%s/raeez-math-template}\n' "$profile" "$template_root"
+    printf '%s\n' '\begin{document}'
+    printf '%s\n' '\textsc{Display Rhythm}. Regular, \emph{italic}, \textbf{bold}; $E_3 \otimes \mathbb Q[[\hbar]]$.'
+    printf '%s\n' '\end{document}'
+  } >"$out/probe.tex"
+  "$command" -interaction=nonstopmode -halt-on-error \
+    -output-directory "$out" "$out/probe.tex" >"$out/probe.log" 2>&1
+  reject_log_defects "$out/probe.log" "profile $profile"
+  reject_typography_warnings "$out/probe.log" "profile $profile"
+}
+
+compile_option_probe() {
+  name=$1
+  options=$2
+  command=$3
+  out=$(mktemp -d "$tmp_root/option-$name-XXXXXX")
+  printf 'option %s -> %s\n' "$name" "$out"
+  {
+    printf '%s\n' '\documentclass{memoir}'
+    printf '\\usepackage[%s]{%s/raeez-math-template}\n' "$options" "$template_root"
+    printf '%s\n' '\begin{document}'
+    printf '%s\n' 'Kerning AV To Yo; $\mathbb Q \subset \mathbb C$, $\mathfrak g_{\Delta_5}$, $\operatorname{RHom}_{\mathcal A}(M,N)$.'
+    printf '%s\n' '\end{document}'
+  } >"$out/probe.tex"
+  "$command" -interaction=nonstopmode -halt-on-error \
+    -output-directory "$out" "$out/probe.tex" >"$out/probe.log" 2>&1
+  reject_log_defects "$out/probe.log" "option $name"
+  reject_typography_warnings "$out/probe.log" "option $name"
+}
+
+check_link() {
+  repo=$1
+  link=$repo/raeez-math-template.sty
+
+  if [ ! -L "$link" ]; then
+    printf 'missing shared template symlink: %s\n' "$link" >&2
+    return 1
+  fi
+
+  current=$(readlink "$link")
+  if [ "$current" != "$style_target" ]; then
+    printf 'wrong shared template symlink: %s -> %s\n' "$link" "$current" >&2
+    return 1
+  fi
+}
+
+consumer_preamble() {
+  repo=$1
+  tex=$2
+  env=$3
+  name=$(basename "$repo")
+  out=$(mktemp -d "$tmp_root/$name-XXXXXX")
+
+  check_link "$repo"
+  check_consumer_entrypoint "consumer $name" "$tex"
+
+  {
+    printf '%s\n' '\def\mainpreambleonly{1}'
+    printf '\\input{%s}\n' "$tex"
+    printf '%s\n' '\begin{document}'
+    printf '%s preamble check.\n' "$name"
+    printf '\\begin{%s}A\\end{%s}\n' "$env" "$env"
+    printf '%s\n' '\end{document}'
+  } >"$out/check.tex"
+
+  (cd "$repo" &&
+    pdflatex -interaction=nonstopmode -halt-on-error \
+      -output-directory "$out" "$out/check.tex" >"$out/check.log" 2>&1)
+  reject_log_defects "$out/check.log" "consumer $name"
+  printf 'consumer ok %s\n' "$name"
+}
+
+standalone_compile() {
+  repo=$1
+  tex=$2
+  sample_label=$3
+  out=$(mktemp -d "$tmp_root/standalone-$sample_label-XXXXXX")
+
+  check_link "$repo"
+  printf 'standalone %s -> %s\n' "$sample_label" "$out"
+
+  (cd "$repo" &&
+    pdflatex -interaction=nonstopmode -halt-on-error \
+      -output-directory "$out" "$tex" >"$out/build.log" 2>&1)
+  reject_log_defects "$out/build.log" "standalone $sample_label"
+  reject_typography_warnings "$out/build.log" "standalone $sample_label"
+
+  if command -v pdffonts >/dev/null 2>&1; then
+    pdf=$(find "$out" -maxdepth 1 -name '*.pdf' -print -quit)
+    if [ -n "$pdf" ]; then
+      pdffonts "$pdf" >"$out/fonts.txt"
+      reject_pdf_font_defects "$out/fonts.txt" "standalone $sample_label"
+    fi
+  fi
+  printf 'standalone ok %s\n' "$sample_label"
+}
+
+print_font_audit
+check_load_after_documentclass "template specimen" "$template_root/main.tex"
+"$template_root/scripts/migrate-consumer-entrypoints" --check
+compile_specimen pdftex pdflatex
+compile_option_probe subscriptcorrection subscriptcorrection pdflatex
+if command -v lualatex >/dev/null 2>&1; then
+  compile_specimen luatex lualatex
+  compile_profile_probe ebgaramond lualatex
+  if font_resolves GaramondPremrPro &&
+     font_resolves GaramondPremrPro-It &&
+     font_resolves GaramondPremrPro-Smbd &&
+     font_resolves GaramondPremrPro-SmbdIt; then
+    compile_profile_probe premier lualatex
+  else
+    printf 'profile premier skipped: complete Garamond Premier Pro family not installed\n'
+  fi
+	  if font_resolves AGaramondPro-Regular &&
+	     font_resolves AGaramondPro-Italic &&
+	     adobepro_weight_resolves; then
+	    compile_profile_probe adobepro lualatex
+	  else
+	    printf 'profile adobepro skipped: complete Adobe Garamond Pro family not installed\n'
+	  fi
+	  if font_resolves AGaramondPro-Regular; then
+	    compile_profile_probe adobepropreview lualatex
+	  else
+	    printf 'profile adobepropreview skipped: AGaramondPro-Regular not installed\n'
+	  fi
+	fi
+
+consumer_preamble "$HOME/chiral-bar-cobar" "$HOME/chiral-bar-cobar/main.tex" theorem
+consumer_preamble "$HOME/cbc" "$HOME/cbc/main.tex" theorem
+consumer_preamble "$HOME/chiral-bar-cobar-vol2" "$HOME/chiral-bar-cobar-vol2/main.tex" theorem
+consumer_preamble "$HOME/chiral-bar-cobar-vol2-kz-bv-20260424" "$HOME/chiral-bar-cobar-vol2-kz-bv-20260424/main.tex" theorem
+consumer_preamble "$HOME/chiral-bar-cobar-vol4" "$HOME/chiral-bar-cobar-vol4/main.tex" theorem
+consumer_preamble "$HOME/calabi-yau-quantum-groups" "$HOME/calabi-yau-quantum-groups/main.tex" theorem
+consumer_preamble "$HOME/igusa-cusp-form" "$HOME/igusa-cusp-form/proj.tex" theorem
+consumer_preamble "$HOME/topological-strings" "$HOME/topological-strings/main.tex" thm
+
+standalone_compile "$HOME/chiral-bar-cobar" "standalone/analytic_sewing.tex" chiral-analytic-sewing
+standalone_compile "$HOME/chiral-bar-cobar" "papers/garland_lepowsky_concentration.tex" chiral-garland
+standalone_compile "$HOME/cbc" "working_notes.tex" cbc-working-notes
+standalone_compile "$HOME/chiral-bar-cobar-vol2" "standalone/bar_chain_models_chiral_quantum_groups.tex" vol2-bar-chain
+standalone_compile "$HOME/calabi-yau-quantum-groups" "notes/wave12_a14_quiver_chart_gaiotto.tex" cy-wave12-quiver
+standalone_compile "$HOME/calabi-yau-quantum-groups" "standalone/k3e_cy3_programme_vol3.tex" cy-k3e-programme
+standalone_compile "$HOME/topological-strings" "frontier_mnop_framing_volume.tex" topological-frontier

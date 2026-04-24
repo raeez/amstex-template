@@ -1,26 +1,140 @@
-\documentclass[12pt]{amsart}
+\documentclass[11pt]{memoir}
+\usepackage{raeez-math-template}
 
-\input{preamble.tex}
-\input{mathmacros.tex}
-\input{authors.tex}
-
-\title{\AmSTeX Project Template}
+\title{Mathematical Typography Specimen}
+\author{Raeez Lorgat}
+\date{\today}
 
 \begin{document}
+\maketitle
 
-  %%%%%%%%%%%%%%%%
-  %% Title etc. %%
-  %%
+\begin{abstract}
+This file is the executable specimen for the shared mathematics template.
+It exercises the page colour, small-cap hierarchy, theorem surface, display
+spacing, tables, citations, and dense mathematical notation.
+\end{abstract}
 
-  \input{abstract.tex}
-  \maketitle
-  \tableofcontents
-  \mbox{}
-  \input{nomenclature.tex}
-  \printnomenclature
+\tableofcontents
 
-  %%%%%%%%%%%%%%%%%%%%%%
-  %% body of document %%
-  %%
+\chapter{Optical System}
+
+\section{Text Colour and Measure}
+
+The template is tuned for long mathematical manuscripts: a quiet Garamond
+text face, restrained line length, old-style proportional figures in prose,
+and a math face whose italic, subscripts, delimiters, and operators are
+matched to the surrounding paragraph.  The page should feel calm before it
+feels ornate.  Conceptual hierarchy is carried by theorem names, labels, and
+proof structure; visual hierarchy remains deliberately narrow.
+
+\begin{definition}[Garamond mathematical page]
+A mathematical page is \emph{balanced} if the text block, display equations,
+theorem headings, footnotes, and tables share one optical weight and one
+baseline rhythm.
+\end{definition}
+
+\begin{theorem}[Display rhythm]
+Let $X$ be a compact Calabi--Yau threefold and let
+$\mathcal C = \operatorname{Perf}(X)$.  If
+$\operatorname{HH}^{\bullet}(\mathcal C)$ carries its cyclic
+$E_3$-structure, then the schematic chiral envelope
+\[
+  \Phi_{\mathrm{ch}}(\mathcal C)
+  \simeq
+  \int_{S^2}
+  \operatorname{Obs}_{\mathrm{hCS}}(X)
+  \otimes_{\mathbb Q}
+  \mathbb Q[[\hbar]]
+\]
+has a typographic presentation whose displayed operators do not dominate
+the paragraph that proves them.
+\end{theorem}
+
+\begin{proof}
+The typographic content is not the formula itself, but the relation among
+the paragraph, the display, and the theorem head.  The package fixes the
+display skip, operator scale, Garamond math metrics, and small-cap tracking
+at the template level, leaving the manuscript to carry only the mathematics.
+\end{proof}
+
+\section{Dense Formulae}
+
+The following display tests operators, large delimiters, blackboard bold,
+script letters, and nested subscripts:
+\[
+  \mathfrak g_{\Delta_5}
+  =
+  \bigoplus_{\alpha \in \Lambda^{2,1}_{II,+}}
+  \mathfrak g_{\alpha},
+  \qquad
+  \sum_{n,m \geq 0}
+  \operatorname{sdim}
+  \mathfrak g_{(n,\ell,m)}
+  q^n r^\ell s^m
+  =
+  \log\!\left(
+    \prod_{\gamma \in \Gamma_{\mathrm{eff}}}
+    (1-x^\gamma)^{-c(\gamma)}
+  \right).
+\]
+
+\begin{remark}
+Tables use the same visual economy: booktabs rules, modest row leading, and
+no vertical boxing.
+\end{remark}
+
+\section{Kerning and Symbol Pressure}
+
+The pairwise texture matters in running prose: AV, WA, Ta, Te, To, Yo, Ly,
+``quoted phrases,'' parenthetical clauses, and em-dashes---not heavy rules in
+miniature---must all disappear into the sentence.  Figures such as 1729,
+2026, and 3.14159 use old-style proportions in prose, while labels and
+tables keep their alignment when the manuscript asks for it.\footnote{The
+footnote is intentionally ordinary: it tests smaller Garamond colour, the
+footnote rule, old-style figures, and the distance between note text and the
+main block.}
+
+Inline mathematics must keep the same colour: $\mathbb Q \subset \mathbb C$,
+$\mathcal F_{\hbar}^{\mathrm{ch}}$, $\mathfrak g_{\Delta_5}$,
+$\mathscr L_{\log}$, $\operatorname{RHom}_{\mathcal A}(M,N)$, and
+$E_3 \otimes \mathbb Q[[\hbar]]$ should read as mathematical prose rather
+than as dropped-in symbols.
+
+\begin{align}
+  \operatorname{RHom}_{\mathcal A}(M,N)
+  &\simeq
+  \operatorname{Tot}
+  \left[
+    \prod_{p+q=n}
+    \operatorname{Hom}_{\mathbb Q}
+    \bigl(B_p\mathcal A \otimes M_q,N\bigr)
+  \right],\\
+  \Delta_5(Z)
+  &=
+  e^{2\pi i(\rho,Z)}
+  \prod_{\alpha\in\mathcal R_+}
+  \left(1-e^{-2\pi i(\alpha,Z)}\right)^{\operatorname{mult}(\alpha)}.
+\end{align}
+
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+Layer & Typographic responsibility & Mathematical responsibility\\
+\midrule
+Text & measure, colour, kerning & exposition\\
+Display & rhythm, delimiter weight & identities\\
+Theorem & hierarchy, head weight & logical dependency\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{biblist}
+\bib{knuth}{book}{
+  author={Knuth, Donald E.},
+  title={The TeXbook},
+  publisher={Addison-Wesley},
+  date={1984},
+}
+\end{biblist}
 
 \end{document}

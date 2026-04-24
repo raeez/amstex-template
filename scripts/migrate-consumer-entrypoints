@@ -1,0 +1,276 @@
+#!/usr/bin/env python3
+"""Migrate standalone mathematics entry points onto the shared template.
+
+The root manuscripts already load ``raeez-math-template``.  This script
+handles the long tail of standalone papers and notes that still carry local
+font, geometry, microtype, theorem-package, and hyperref preambles.
+
+It deliberately keeps manuscript-owned notation, local theorem declarations,
+and domain packages.  The inserted ``localtheorems`` option lets those files
+retain their local theorem names while inheriting the canonical typography.
+"""
+
+from __future__ import annotations
+
+import argparse
+import re
+from pathlib import Path
+
+
+REPOS = [
+    Path.home() / "chiral-bar-cobar",
+    Path.home() / "cbc",
+    Path.home() / "chiral-bar-cobar-vol2",
+    Path.home() / "chiral-bar-cobar-vol2-kz-bv-20260424",
+    Path.home() / "chiral-bar-cobar-vol4",
+    Path.home() / "calabi-yau-quantum-groups",
+    Path.home() / "igusa-cusp-form",
+    Path.home() / "topological-strings",
+]
+
+SKIP_DIRS = {
+    ".git",
+    ".hg",
+    ".svn",
+    ".claude",
+    "archive",
+    "out",
+    "build",
+    "dist",
+    "node_modules",
+    "__pycache__",
+}
+
+SHARED_PACKAGES = {
+    "algorithm",
+    "algpseudocode",
+    "amsfonts",
+    "amsmath",
+    "amsrefs",
+    "amssymb",
+    "amsthm",
+    "bm",
+    "booktabs",
+    "bookmark",
+    "cmap",
+    "color",
+    "ebgaramond",
+    "enumitem",
+    "enumerate",
+    "etoolbox",
+    "float",
+    "fontenc",
+    "geometry",
+    "graphicx",
+    "hyperref",
+    "iftex",
+    "ifthen",
+    "inputenc",
+    "inconsolata",
+    "lmodern",
+    "longtable",
+    "makecell",
+    "makeidx",
+    "mathrsfs",
+    "mathtools",
+    "microtype",
+    "mleftright",
+    "multicol",
+    "newtxmath",
+    "newtxtext",
+    "newunicodechar",
+    "nowidow",
+    "setspace",
+    "sourcesanspro",
+    "tcolorbox",
+    "thmtools",
+    "tikz-cd",
+    "url",
+    "xcolor",
+    "xurl",
+}
+
+TYPESETTING_LENGTHS = {
+    r"\abovedisplayshortskip",
+    r"\abovedisplayskip",
+    r"\arraycolsep",
+    r"\belowdisplayshortskip",
+    r"\belowdisplayskip",
+    r"\emergencystretch",
+    r"\footnotesep",
+    r"\headheight",
+    r"\headsep",
+    r"\hfuzz",
+    r"\jot",
+    r"\parindent",
+    r"\parskip",
+    r"\skip\footins",
+    r"\textfloatsep",
+    r"\thinmuskip",
+    r"\vfuzz",
+}
+
+DOCUMENTCLASS_RE = re.compile(
+    r"(?m)^(?P<indent>\s*)\\documentclass(?P<opts>\s*\[[^\]]*\])?\s*\{(?P<class>[^}]*)\}"
+)
+
+USEPACKAGE_RE = re.compile(
+    r"(?m)^[ \t]*\\usepackage(?P<opts>\s*\[[^\]]*\])?\s*\{(?P<packages>[^}]*)\}[ \t]*(?:%[^\n]*)?\n?"
+)
+
+
+def iter_tex_files(repo: Path) -> list[Path]:
+    files: list[Path] = []
+    for path in repo.rglob("*.tex"):
+        if any(part in SKIP_DIRS or part.startswith(".") for part in path.parts):
+            continue
+        files.append(path)
+    return sorted(files)
+
+
+def package_name(raw: str) -> str:
+    return raw.strip().split("/", 1)[-1].lower()
+
+
+def strip_shared_usepackages(text: str) -> str:
+    def replace(match: re.Match[str]) -> str:
+        packages = [pkg.strip() for pkg in match.group("packages").split(",") if pkg.strip()]
+        kept = [pkg for pkg in packages if package_name(pkg) not in SHARED_PACKAGES]
+
+        if kept == packages:
+            return match.group(0)
+        if not kept:
+            return ""
+
+        opts = match.group("opts") or ""
+        return rf"\usepackage{opts}{{{','.join(kept)}}}" + "\n"
+
+    return USEPACKAGE_RE.sub(replace, text)
+
+
+def strip_balanced_command(text: str, command: str) -> str:
+    start_re = re.compile(rf"(?m)^[ \t]*\\{re.escape(command)}\s*\{{")
+    pos = 0
+    chunks: list[str] = []
+
+    while True:
+        match = start_re.search(text, pos)
+        if not match:
+            chunks.append(text[pos:])
+            return "".join(chunks)
+
+        chunks.append(text[pos : match.start()])
+        depth = 0
+        i = match.end() - 1
+        while i < len(text):
+            ch = text[i]
+            if ch == "{" and (i == 0 or text[i - 1] != "\\"):
+                depth += 1
+            elif ch == "}" and (i == 0 or text[i - 1] != "\\"):
+                depth -= 1
+                if depth == 0:
+                    i += 1
+                    if i < len(text) and text[i] == "\n":
+                        i += 1
+                    break
+            i += 1
+        pos = i
+
+
+def strip_local_typesetting(text: str) -> str:
+    text = strip_balanced_command(text, "geometry")
+    text = strip_balanced_command(text, "hypersetup")
+
+    simple_patterns = [
+        r"(?m)^[ \t]*\\frenchspacing[ \t]*(?:%[^\n]*)?\n?",
+        r"(?m)^[ \t]*\\mleftright[ \t]*(?:%[^\n]*)?\n?",
+        r"(?m)^[ \t]*\\raggedbottom[ \t]*(?:%[^\n]*)?\n?",
+        r"(?m)^[ \t]*\\flushbottom[ \t]*(?:%[^\n]*)?\n?",
+        r"(?m)^[ \t]*\\sloppy[ \t]*(?:%[^\n]*)?\n?",
+        r"(?m)^[ \t]*\\allowdisplaybreaks(?:\[[^\]]*\])?[ \t]*(?:%[^\n]*)?\n?",
+        r"(?m)^[ \t]*\\linespread\s*\{[^}]*\}[ \t]*(?:%[^\n]*)?\n?",
+        r"(?m)^[ \t]*\\setstretch\s*\{[^}]*\}[ \t]*(?:%[^\n]*)?\n?",
+        r"(?m)^[ \t]*\\onehalfspacing[ \t]*(?:%[^\n]*)?\n?",
+        r"(?m)^[ \t]*\\doublespacing[ \t]*(?:%[^\n]*)?\n?",
+    ]
+    for pattern in simple_patterns:
+        text = re.sub(pattern, "", text)
+
+    for length in TYPESETTING_LENGTHS:
+        pattern = rf"(?m)^[ \t]*\\setlength\s*\{{{re.escape(length)}\}}\s*\{{[^}}]*\}}[ \t]*(?:%[^\n]*)?\n?"
+        text = re.sub(pattern, "", text)
+
+    return text
+
+
+def migrate_text(text: str) -> tuple[str, str]:
+    if "raeez-math-template" in text:
+        return text, "already-template"
+
+    match = DOCUMENTCLASS_RE.search(text)
+    if not match:
+        return text, "no-documentclass"
+
+    doc_class = match.group("class").strip()
+    if doc_class == "letter":
+        return text, "skip-letter"
+
+    migrated = strip_shared_usepackages(text)
+    migrated = strip_local_typesetting(migrated)
+
+    match = DOCUMENTCLASS_RE.search(migrated)
+    if not match:
+        return text, "documentclass-lost"
+
+    insertion = "\n\\usepackage[localtheorems]{raeez-math-template}"
+    migrated = migrated[: match.end()] + insertion + migrated[match.end() :]
+    migrated = re.sub(r"\n{4,}", "\n\n\n", migrated)
+    return migrated, "migrated"
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--dry-run", action="store_true")
+    parser.add_argument("--check", action="store_true")
+    args = parser.parse_args()
+
+    counts: dict[str, int] = {}
+    missing: list[Path] = []
+
+    for repo in REPOS:
+        if not repo.is_dir():
+            counts["missing-repo"] = counts.get("missing-repo", 0) + 1
+            print(f"missing-repo {repo}")
+            continue
+
+        for path in iter_tex_files(repo):
+            text = path.read_text(encoding="utf-8")
+            if "\\documentclass" not in text:
+                continue
+
+            migrated, status = migrate_text(text)
+            counts[status] = counts.get(status, 0) + 1
+
+            if status == "migrated":
+                print(f"migrate {path}")
+                if args.check:
+                    missing.append(path)
+                elif not args.dry_run:
+                    path.write_text(migrated, encoding="utf-8")
+            elif args.dry_run and status not in {"already-template", "no-documentclass"}:
+                print(f"{status} {path}")
+
+    for key in sorted(counts):
+        print(f"{key}: {counts[key]}")
+
+    if args.check and missing:
+        print("entry points not yet on shared template:")
+        for path in missing:
+            print(path)
+        return 1
+
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
